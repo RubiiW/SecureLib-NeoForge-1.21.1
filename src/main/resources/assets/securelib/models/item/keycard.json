@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer1": "securelib:item/keycard",
+    "layer0": "securelib:item/keycard_overlay"
+  }
+}

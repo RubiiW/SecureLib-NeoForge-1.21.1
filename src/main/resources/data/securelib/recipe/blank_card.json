@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "show_notification": true,
+  "category": "redstone",
+  "pattern": [
+    " Q ",
+    "IPI",
+    " R "
+  ],
+  "key": {
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minecraft:iron_nugget"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "id": "securelib:blank_card",
+    "count": 1
+  }
+}

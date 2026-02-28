@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "securelib:card_printer",
+    "securelib:card_writer"
+  ]
+}

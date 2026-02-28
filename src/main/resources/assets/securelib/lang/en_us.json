@@ -1,0 +1,40 @@
+{
+  "block.securelib.card_reader": "Card Reader",
+  "block.securelib.card_reader.configured": "The Reader has been configured to your Editor's Frequency and Clearance",
+  "block.securelib.card_reader.already_configured": "This Reader is already configured",
+  "block.securelib.card_reader.missing_data": "Use a Reader Editor to configure this block",
+  "block.securelib.card_reader.editor_missing_data": "You need to configure your Editor in a Card Writer first",
+  "block.securelib.card_reader.need_keycard": "Use a Keycard to operate this block",
+  "block.securelib.card_reader.data_mismatch": "Frequency or Clearance does not match",
+  "block.securelib.card_reader.removal": "Left Click this block to remove it",
+
+  "block.securelib.card_printer": "Card Printer",
+  "block.securelib.card_printer.default_name": "Keycard Name",
+  "block.securelib.card_printer.default_color": "6565f5",
+  "block.securelib.card_writer": "Card Writer",
+
+  "block.securelib.card_writer.frequency": "Frequency",
+  "block.securelib.card_writer.clearance": "Clearance",
+  "block.securelib.card_writer.input_slot_limitations": "May only take Keycards and Reader Editors",
+
+  "gui.securelib.card_printer.card_name": "Keycard Name",
+  "gui.securelib.card_printer.card_color": "Color",
+
+  "item.securelib.blank_card": "Blank Card",
+  "item.securelib.magnetic_band": "Magnetic Band",
+
+  "item.securelib.operator_keycard": "Operator Keycard",
+  "item.securelib.keycard": "Keycard",
+  "item.securelib.reader_editor": "Reader Editor",
+
+  "tooltip.securelib.operator_keycard.edit": "Use a Card Printer to edit",
+
+  "tooltip.securelib.keycard": "Press [SHIFT] for more info",
+  "tooltip.securelib.keycard.clearance": "Clearance:",
+  "tooltip.securelib.keycard.color": "Color:",
+  "tooltip.securelib.keycard.frequency": "Frequency:",
+  "tooltip.securelib.keycard.no_data": "No data yet",
+  "tooltip.securelib.keycard.edit": "Use a Card Printer & Writer to edit",
+
+  "tooltip.securelib.editor.edit": "Use a Card Writer to edit"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "securelib:magnetic_band"
+    },
+    {
+      "item": "securelib:blank_card"
+    }
+  ],
+  "result": {
+    "id": "securelib:keycard",
+    "count": 1
+  }
+}
