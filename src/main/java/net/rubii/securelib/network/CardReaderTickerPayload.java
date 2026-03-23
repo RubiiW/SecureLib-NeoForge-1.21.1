@@ -6,11 +6,12 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.rubii.securelib.SecureLib;
 
 public record CardReaderTickerPayload(BlockPos blockPos, Integer timer) implements CustomPacketPayload {
 
     public static final Type<CardReaderTickerPayload> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath("securelib", "set_reader_timer"));
+            new Type<>(ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "set_reader_timer"));
 
     public static final StreamCodec<FriendlyByteBuf, CardReaderTickerPayload> STREAM_CODEC =
             StreamCodec.composite(

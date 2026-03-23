@@ -15,10 +15,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -53,7 +50,8 @@ public class CardReaderBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public CardReaderBlock(BlockBehaviour.Properties properties) {
-        super(properties);
+        super(properties.strength(30f).sound(SoundType.METAL)
+                .destroyTime(99999999999999f).requiresCorrectToolForDrops().noOcclusion());
     }
 
     @Override
@@ -209,7 +207,7 @@ public class CardReaderBlock extends BaseEntityBlock {
         }
     }
 
-    private ItemInteractionResult readerEditor(CardReaderBlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult){
+    public ItemInteractionResult readerEditor(CardReaderBlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult){
         Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
         Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
 
@@ -237,7 +235,7 @@ public class CardReaderBlock extends BaseEntityBlock {
         }
     }
 
-    private ItemInteractionResult keycard(CardReaderBlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult){
+    public ItemInteractionResult keycard(CardReaderBlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult){
         Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
         Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
 

@@ -6,11 +6,12 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.rubii.securelib.SecureLib;
 
 public record CardReaderPayload(BlockPos blockPos, Integer frequency, Integer clearance) implements CustomPacketPayload {
 
     public static final Type<CardReaderPayload> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath("securelib", "set_reader_data"));
+            new Type<>(ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "set_reader_data"));
 
     public static final StreamCodec<FriendlyByteBuf, CardReaderPayload> STREAM_CODEC =
             StreamCodec.composite(

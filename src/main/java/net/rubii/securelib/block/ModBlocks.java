@@ -19,13 +19,15 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SecureLib.MODID);
 
-    public static final DeferredBlock<Block> CARD_READER = registerBlock("card_reader", () -> new CardReaderBlock(BlockBehaviour.Properties.of()
-            .strength(30f).sound(SoundType.METAL).destroyTime(99999999999999f).requiresCorrectToolForDrops().noOcclusion()
-    ));
-    public static final DeferredBlock<Block> CARD_PRINTER = registerBlock("card_printer", () -> new CardPrinterBlock(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> CARD_READER = registerBlock("card_reader", () ->
+            new CardReaderBlock(BlockBehaviour.Properties.of()));
+
+    public static final DeferredBlock<Block> CARD_PRINTER = registerBlock("card_printer", () ->
+            new CardPrinterBlock(BlockBehaviour.Properties.of()
             .strength(30f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
     ));
-    public static final DeferredBlock<Block> CARD_WRITER = registerBlock("card_writer", () -> new CardWriterBlock(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> CARD_WRITER = registerBlock("card_writer", () ->
+            new CardWriterBlock(BlockBehaviour.Properties.of()
             .strength(30f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
     ));
 
