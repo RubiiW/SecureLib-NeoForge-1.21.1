@@ -3,17 +3,17 @@
   "category": "redstone",
   "ingredients": [
     {
-      "item": "securelib:magnetic_band"
+      "item": "minecraft:redstone"
     },
     {
-      "item": "securelib:blank_card"
+      "item": "minecraft:gold_nugget"
     },
     {
-      "item": "securelib:data_chip"
+      "item": "minecraft:quartz"
     }
   ],
   "result": {
-    "id": "securelib:keycard",
+    "id": "securelib:data_chip",
     "count": 1
   }
 }

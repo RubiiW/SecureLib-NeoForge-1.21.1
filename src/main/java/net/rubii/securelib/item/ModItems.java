@@ -24,6 +24,8 @@ public class ModItems {
 
     public static final DeferredItem<Item> MAGNETIC_BAND = ITEMS.register("magnetic_band", () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<Item> DATA_CHIP = ITEMS.register("data_chip", () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<Item> READER_EDITOR = ITEMS.register("reader_editor", () -> new EditorItem(new Item.Properties()
             .stacksTo(1)));
 

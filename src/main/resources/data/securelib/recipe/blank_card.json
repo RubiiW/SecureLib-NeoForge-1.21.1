@@ -3,17 +3,9 @@
   "show_notification": true,
   "category": "redstone",
   "pattern": [
-    " Q ",
-    "IPI",
-    " R "
+    "IPI"
   ],
   "key": {
-    "Q": {
-      "item": "minecraft:quartz"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    },
     "I": {
       "item": "minecraft:iron_nugget"
     },
