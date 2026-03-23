@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.rubii.securelib.block.custom.CardReaderBlock;
+import net.rubii.securelib.util.ModTags;
 
 import javax.annotation.Nullable;
 
@@ -72,17 +73,16 @@ public class CardReaderBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    public void tick(Level level, BlockPos blockPos, BlockState blockState){
+    public void tick(Level level, BlockPos pos, BlockState state){
         if (timer == -1) return;
         timer--;
 
         if (timer == 0) {
-            BlockState state = level.getBlockState(blockPos);
             if (state.getValue(CardReaderBlock.POWERED)) {
                 Block block = state.getBlock();
 
                 if (block instanceof CardReaderBlock cardReaderBlock) {
-                    cardReaderBlock.power(false, state, level, blockPos, null);
+                    cardReaderBlock.power(false, state, level, pos, null);
                 }
             }
             timer = -1;

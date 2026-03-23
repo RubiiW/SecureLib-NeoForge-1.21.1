@@ -185,9 +185,9 @@ public class CardReaderBlock extends BaseEntityBlock {
             CardReaderBlockEntity blockEntity = (CardReaderBlockEntity) level.getBlockEntity(pos);
 
             if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
-                return readerEditor(blockEntity, stack, state, level, pos, player, hand, hitResult);
+                return readerEditor(blockEntity, stack, pos, player);
             }else if (player.getItemInHand(hand).is(ModItems.KEYCARD)){
-                return keycard(blockEntity, stack, state, level, pos, player, hand, hitResult);
+                return keycard(blockEntity, stack, state, level, pos, player);
             }else {
                 if (blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0){
                     player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
@@ -202,12 +202,12 @@ public class CardReaderBlock extends BaseEntityBlock {
             }
 
         } else {
-            SecureLib.LOGGER.error("CardReaderBlock is not a CardReaderBlockEntity at pos: " + pos.toString());
+            SecureLib.LOGGER.error("CardReaderBlock is not a CardReaderBlockEntity at pos: " + pos);
             return ItemInteractionResult.FAIL;
         }
     }
 
-    public ItemInteractionResult readerEditor(CardReaderBlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult){
+    public ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player){
         Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
         Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
 
@@ -216,26 +216,30 @@ public class CardReaderBlock extends BaseEntityBlock {
             return ItemInteractionResult.SUCCESS;
         }
 
-        if (
-            blockEntity.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) &&
-            Objects.equals(blockEntity.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))
-        ) {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.removal"), true);
-            return ItemInteractionResult.SUCCESS;
-        } else if (blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0) {
-            Minecraft.getInstance().getConnection().send(
-                    new CardReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
-            );
-            player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-            return ItemInteractionResult.SUCCESS;
-        } else {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.already_configured"), true);
+        if (blockEntity instanceof CardReaderBlockEntity be){
+            if (
+                    be.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) &&
+                            Objects.equals(be.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))
+            ) {
+                player.displayClientMessage(Component.translatable("block.securelib.card_reader.removal"), true);
+                return ItemInteractionResult.SUCCESS;
+            } else if (be.getClearance() == 0 && be.getFrequency() == 0) {
+                Minecraft.getInstance().getConnection().send(
+                        new CardReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
+                );
+                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+                return ItemInteractionResult.SUCCESS;
+            } else {
+                player.displayClientMessage(Component.translatable("block.securelib.card_reader.already_configured"), true);
 
-            return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
+            }
         }
+
+        return ItemInteractionResult.SUCCESS;
     }
 
-    public ItemInteractionResult keycard(CardReaderBlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult){
+    public ItemInteractionResult keycard(BlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player){
         Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
         Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
 
@@ -244,14 +248,16 @@ public class CardReaderBlock extends BaseEntityBlock {
             return ItemInteractionResult.SUCCESS;
         }
 
-        if (blockEntity.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) && Objects.equals(blockEntity.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))) {
-            activate(level, state, player, pos);
-        } else if ((blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0) || (blockEntity.getClearance() == null && blockEntity.getFrequency() == null)) {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
-        } else {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
+        if (blockEntity instanceof CardReaderBlockEntity be) {
+            if (be.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) && Objects.equals(be.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))) {
+                activate(level, state, player, pos);
+            } else if ((be.getClearance() == 0 && be.getFrequency() == 0) || (be.getClearance() == null && be.getFrequency() == null)) {
+                player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
+            } else {
+                player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
 
-            return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
+            }
         }
 
         return  ItemInteractionResult.SUCCESS;

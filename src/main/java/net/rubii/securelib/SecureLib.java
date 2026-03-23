@@ -3,6 +3,7 @@ package net.rubii.securelib;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.rubii.securelib.api.CardReaderRegistry;
 import net.rubii.securelib.block.entity.ModBlockEntities;
 import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.item.ModItems;
@@ -36,6 +37,8 @@ public class SecureLib {
     public SecureLib(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(ModNetworking::register);
+
+        CardReaderRegistry.register(ModBlocks.CARD_READER);
 
         ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
