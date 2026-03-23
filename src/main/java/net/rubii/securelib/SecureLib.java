@@ -2,9 +2,11 @@ package net.rubii.securelib;
 
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.rubii.securelib.api.CardReaderRegistry;
 import net.rubii.securelib.block.entity.ModBlockEntities;
+import net.rubii.securelib.block.entity.renderer.CardWriterBlocKEntityRenderer;
 import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.network.ModNetworking;
@@ -60,6 +62,11 @@ public class SecureLib {
         public static void registerScreens(RegisterMenuScreensEvent event){
             event.register(ModMenuTypes.CARD_PRINTER_MENU.get(), CardPrinterScreen::new);
             event.register(ModMenuTypes.CARD_WRITER_MENU.get(), CardWriterScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void registerBER(EntityRenderersEvent.RegisterRenderers event){
+            event.registerBlockEntityRenderer(ModBlockEntities.CARD_WRITER_BE.get(), CardWriterBlocKEntityRenderer::new);
         }
 
     }

@@ -37,8 +37,8 @@ public class CardWriterBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    private static final int INPUT_SLOT = 0;
-    private static final int OUTPUT_SLOT = 1;
+    public static final int INPUT_SLOT = 0;
+    public static final int OUTPUT_SLOT = 1;
     private String frequency = ""; // DO NOT REMOVE THE = "" OR THE THING EXPLODE
     private Integer clearance = 1;
 
