@@ -53,30 +53,18 @@ public class CardReaderBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     private static String tooltip;
 
-    public static final MapCodec<CardReaderBlock> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                    BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(CardReaderBlock::getProperties),
-                    Codec.STRING.fieldOf("tooltip_key").forGetter(block -> tooltip)
-            ).apply(instance, CardReaderBlock::new)
-    );
+    public static final MapCodec<CardReaderBlock> CODEC = simpleCodec(CardReaderBlock::new);
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public CardReaderBlock(BlockBehaviour.Properties properties, String tooltipKey) {
+    public CardReaderBlock(BlockBehaviour.Properties properties) {
         super(properties.strength(30f).sound(SoundType.METAL)
                 .destroyTime(99999999999999f).requiresCorrectToolForDrops().noOcclusion());
-        tooltip = tooltipKey;
-    }
-
-    public BlockBehaviour.Properties getProperties() {
-        return this.properties;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
         components.add(Component.translatable("tooltip.securelib.card_readers").withStyle(ChatFormatting.GRAY));
-        if (tooltip == null || tooltip == "") return;
-        components.add(Component.translatable(tooltip).withStyle(ChatFormatting.GRAY));
     }
 
     @Override

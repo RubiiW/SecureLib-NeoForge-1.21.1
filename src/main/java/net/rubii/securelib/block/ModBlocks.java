@@ -21,7 +21,7 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SecureLib.MODID);
 
     public static final DeferredBlock<Block> CARD_READER = registerBlock("card_reader", () ->
-            new CardReaderBlock(BlockBehaviour.Properties.of(), ""));
+            new CardReaderBlock(BlockBehaviour.Properties.of()));
 
     public static final DeferredBlock<Block> CARD_PRINTER = registerBlock("card_printer", () ->
             new CardPrinterBlock(BlockBehaviour.Properties.of()
