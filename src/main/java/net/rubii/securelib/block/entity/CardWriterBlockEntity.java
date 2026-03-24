@@ -23,6 +23,7 @@ import net.rubii.securelib.block.custom.CardWriterBlock;
 import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.screen.custom.CardWriterMenu;
+import net.rubii.securelib.util.ModTags;
 
 import javax.annotation.Nullable;
 
@@ -210,8 +211,8 @@ public class CardWriterBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private boolean hasRecipe(){
-        ItemStack output = new ItemStack(ModItems.KEYCARD.get(), 1);
-        return (inventory.getStackInSlot(INPUT_SLOT).is(ModItems.KEYCARD) || inventory.getStackInSlot(INPUT_SLOT).is(ModItems.READER_EDITOR)) &&
+        ItemStack output = new ItemStack(inventory.getStackInSlot(INPUT_SLOT).getItem(), 1);
+        return (inventory.getStackInSlot(INPUT_SLOT).is(ModTags.Items.DATA_RECEIVER)) &&
                 canInsertAmountIntoOutputSlot(output.getCount()) &&
                 canInsertItemIntoOutputSlot(output) &&
                 inventory.getStackInSlot(INPUT_SLOT).get(ModDataComponents.CLEARANCE) == null &&
