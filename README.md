@@ -5,4 +5,4 @@
 **Go on the [Modrinth Page](https://modrinth.com/mod/securelib) to access the mod's releases**
 
 # LISENCING
-**Project is lisenced under [CreativeCommons Atribution NonCommercial ShareAlike 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)**
+**Project is lisenced under [CreativeCommons Atribution NonCommercial NonDerivatives 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)**
