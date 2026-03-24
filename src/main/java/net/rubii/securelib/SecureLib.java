@@ -66,7 +66,7 @@ public class SecureLib {
 
         @SubscribeEvent
         public static void registerBER(EntityRenderersEvent.RegisterRenderers event){
-            //event.registerBlockEntityRenderer(ModBlockEntities.CARD_WRITER_BE.get(), CardWriterBlocKEntityRenderer::new);
+            event.registerBlockEntityRenderer(ModBlockEntities.CARD_WRITER_BE.get(), CardWriterBlocKEntityRenderer::new);
         }
 
     }

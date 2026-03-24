@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -29,29 +30,31 @@ public class CardWriterBlocKEntityRenderer implements BlockEntityRenderer<CardWr
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack stack = blockEntity.inventory.getStackInSlot(blockEntity.INPUT_SLOT);
 
-        poseStack.pushPose();
-        poseStack.scale(0.35F, 0.35F, 0.35F);
+        float x = switch (blockEntity.getBlockState().getValue(FACING)){
+            case EAST -> 0.25f;
+            case WEST -> 0.775f;
+            case SOUTH -> 0.2f;
+            default -> 0.8125f;
+        };
 
-        switch (blockEntity.getBlockState().getValue(FACING)) {
-            case NORTH: {
-                //poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-                //poseStack.mulPose(Axis.YP.rotationDegrees(17.0F));
-                poseStack.translate(0F, 0.16F, 0F);
-            } case SOUTH: {
-                //poseStack.mulPose(Axis.YP.rotationDegrees(17.0F));
-                poseStack.translate(0F, 0.25F, 0F);
-                poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-            } case WEST: {
-                //poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-                //poseStack.mulPose(Axis.YP.rotationDegrees(17.0F));
-                poseStack.translate(0F, 0.16F, 0F);
-            } case EAST: {
-                //poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-                //poseStack.mulPose(Axis.YP.rotationDegrees(17.0F));
-                poseStack.translate(0F, 0.16F, 0F);
-            }
+        float z = switch (blockEntity.getBlockState().getValue(FACING)){
+            case EAST -> 0.8125f;
+            case WEST -> 0.2f;
+            case SOUTH -> 0.25f;
+            default -> 0.775f;
+        };
+
+        poseStack.pushPose();
+
+        poseStack.translate(x, 0.04, z);
+
+        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+
+        if (blockEntity.getBlockState().getValue(FACING) == Direction.NORTH || blockEntity.getBlockState().getValue(FACING) == Direction.SOUTH){
+            poseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
         }
 
+        poseStack.scale(0.35F, 0.35F, 0.35F);
 
         itemRenderer.renderStatic(stack, ItemDisplayContext.FIXED, getLightLevel(blockEntity.getLevel(), blockEntity.getBlockPos()),
                 OverlayTexture.NO_OVERLAY, poseStack, bufferSource, blockEntity.getLevel(), 1);
