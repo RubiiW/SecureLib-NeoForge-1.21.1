@@ -20,6 +20,7 @@ public class ModTags {
     public static class Items {
         public static final TagKey<Item> SKELETON_KEYCARDS = createTag("skeleton_keycards");
         public static final TagKey<Item> KEYCARDS = createTag("keycards");
+        public static final TagKey<Item> DATA_RECEIVER = createTag("data_receiver");
 
         private static TagKey<Item> createTag(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, name));

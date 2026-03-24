@@ -32,33 +32,33 @@ public class KeycardItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             if (stack.get(DataComponents.DYED_COLOR) == null && stack.get(ModDataComponents.FREQUENCY) == null && stack.get(ModDataComponents.CLEARANCE) == null){
-                components.add(Component.translatable("tooltip.securelib.keycard.no_data").withStyle(ChatFormatting.GRAY));
-                components.add(Component.translatable("tooltip.securelib.keycard.edit").withStyle(ChatFormatting.GRAY));
+                components.add(Component.translatable("tooltip.securelib.data_receiver.no_data").withStyle(ChatFormatting.GRAY));
+                components.add(Component.translatable("tooltip.securelib.data_receiver.edit_double").withStyle(ChatFormatting.GRAY));
             }
 
             if (stack.get(ModDataComponents.CLEARANCE) != null){
                 String clearance = " " + stack.get(ModDataComponents.CLEARANCE).toString();
-                String translated = Component.translatable("tooltip.securelib.keycard.clearance").getString();
+                String translated = Component.translatable("tooltip.securelib.data_receiver.clearance").getString();
                 Component component = Component.literal(translated + clearance).withStyle(ChatFormatting.GRAY);
 
                 components.add(component);
             }
             if (stack.get(ModDataComponents.FREQUENCY) != null){
                 String frequency = " " + stack.get(ModDataComponents.FREQUENCY).toString();
-                String translated = Component.translatable("tooltip.securelib.keycard.frequency").getString();
+                String translated = Component.translatable("tooltip.securelib.data_receiver.frequency").getString();
                 Component component = Component.literal(translated + frequency).withStyle(ChatFormatting.GRAY);
 
                 components.add(component);
             }
             if (stack.get(DataComponents.DYED_COLOR) != null){
                 String hex = String.format(Locale.ROOT, " #%06X", stack.get(DataComponents.DYED_COLOR).rgb());
-                String translated = Component.translatable("tooltip.securelib.keycard.color").getString();
+                String translated = Component.translatable("tooltip.securelib.data_receiver.color").getString();
                 Component component = Component.literal(translated + hex).withStyle(ChatFormatting.GRAY);
 
                 components.add(component);
             }
         } else {
-            components.add(Component.translatable("tooltip.securelib.keycard").withStyle(ChatFormatting.GRAY));
+            components.add(Component.translatable("tooltip.securelib.data_receiver").withStyle(ChatFormatting.GRAY));
         }
 
         super.appendHoverText(stack, context, components, flag);

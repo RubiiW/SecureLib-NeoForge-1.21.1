@@ -21,17 +21,17 @@ public class OperatorKeycardItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             if (stack.get(DataComponents.DYED_COLOR) == null){
-                components.add(Component.translatable("tooltip.securelib.keycard.no_data").withStyle(ChatFormatting.GRAY));
-                components.add(Component.translatable("tooltip.securelib.operator_keycard.edit").withStyle(ChatFormatting.GRAY));
+                components.add(Component.translatable("tooltip.securelib.data_receiver.no_data").withStyle(ChatFormatting.GRAY));
+                components.add(Component.translatable("tooltip.securelib.data_receiver.edit_color").withStyle(ChatFormatting.GRAY));
             } else {
                 String hex = String.format(Locale.ROOT, " #%06X", stack.get(DataComponents.DYED_COLOR).rgb());
-                String translated = Component.translatable("tooltip.securelib.keycard.color").getString();
+                String translated = Component.translatable("tooltip.securelib.data_receiver.color").getString();
                 Component component = Component.literal(translated + hex).withStyle(ChatFormatting.GRAY);
 
                 components.add(component);
             }
         } else {
-            components.add(Component.translatable("tooltip.securelib.keycard").withStyle(ChatFormatting.GRAY));
+            components.add(Component.translatable("tooltip.securelib.data_receiver").withStyle(ChatFormatting.GRAY));
         }
 
         super.appendHoverText(stack, context, components, flag);

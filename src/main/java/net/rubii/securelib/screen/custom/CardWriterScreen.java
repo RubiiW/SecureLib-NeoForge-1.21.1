@@ -61,16 +61,6 @@ public class CardWriterScreen extends AbstractContainerScreen<CardWriterMenu> {
         WidgetSprites buttonUpSprites = new WidgetSprites(BUTTON_UP, BUTTON_UP_DISABLED, BUTTON_UP_PRESSED, BUTTON_UP);
         WidgetSprites buttonDownSprites = new WidgetSprites(BUTTON_DOWN, BUTTON_DOWN_DISABLED, BUTTON_DOWN_PRESSED, BUTTON_DOWN);
 
-        SecureLib.LOGGER.info("Button Up Texture: {}", BUTTON_UP);
-        SecureLib.LOGGER.info("Button Down Texture: {}", BUTTON_DOWN);
-
-        if (minecraft.getTextureManager().getTexture(BUTTON_UP) == null) {
-            SecureLib.LOGGER.error("Button Up Texture NOT loaded: {}", BUTTON_UP);
-        }
-        if (minecraft.getTextureManager().getTexture(BUTTON_DOWN) == null) {
-            SecureLib.LOGGER.error("Button Down Texture NOT loaded: {}", BUTTON_DOWN);
-        }
-
         increaseClearanceButton = new ImageButton(leftPos + 34, topPos + 40, 18, 9, buttonUpSprites, button -> {
             updateClearance(menu.blockEntity.getClearance() + 1);
         });
@@ -123,10 +113,8 @@ public class CardWriterScreen extends AbstractContainerScreen<CardWriterMenu> {
 
             if (hoveredSlot.index == 36 && mouseY <= 118 && menu.blockEntity.inventory.getStackInSlot(0).isEmpty()) {
                 List<Component> components = new ArrayList<>();
-                components.add(Component.translatable("block.securelib.card_writer.input_slot_limitations"));
+                components.add(Component.translatable("block.securelib.card_writer.input_slot_limitation"));
                 guiGraphics.renderComponentTooltip(font, components, mouseX, mouseY);
-            }else{
-                SecureLib.LOGGER.info("Hovered slot is not target !");
             }
         }
 

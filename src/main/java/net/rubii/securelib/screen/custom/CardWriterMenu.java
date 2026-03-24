@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import net.rubii.securelib.block.ModBlocks;
 import net.rubii.securelib.block.entity.CardWriterBlockEntity;
-import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.screen.ModMenuTypes;
 import net.rubii.securelib.util.ModTags;
 
@@ -38,10 +37,8 @@ public class CardWriterMenu extends AbstractContainerMenu {
         {
             @Override
             public boolean mayPlace(ItemStack stack){
-                return stack.is(ModTags.Items.KEYCARDS) || stack.getItem() == ModItems.READER_EDITOR.get();
+                return stack.is(ModTags.Items.DATA_RECEIVER);
             }
-
-
         });
 
         //Output Slot

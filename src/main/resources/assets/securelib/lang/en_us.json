@@ -15,7 +15,7 @@
 
   "block.securelib.card_writer.frequency": "Frequency",
   "block.securelib.card_writer.clearance": "Clearance",
-  "block.securelib.card_writer.input_slot_limitations": "May only take Keycards and Reader Editors",
+  "block.securelib.card_writer.input_slot_limitation": "May only take Data Receivers (#data_receiver)",
 
   "gui.securelib.card_printer.card_name": "Keycard Name",
   "gui.securelib.card_printer.card_color": "Color",
@@ -28,14 +28,12 @@
   "item.securelib.keycard": "Keycard",
   "item.securelib.reader_editor": "Reader Editor",
 
-  "tooltip.securelib.operator_keycard.edit": "Use a Card Printer to edit",
-
-  "tooltip.securelib.keycard": "Press [SHIFT] for more info",
-  "tooltip.securelib.keycard.clearance": "Clearance:",
-  "tooltip.securelib.keycard.color": "Color:",
-  "tooltip.securelib.keycard.frequency": "Frequency:",
-  "tooltip.securelib.keycard.no_data": "No data yet",
-  "tooltip.securelib.keycard.edit": "Use a Card Printer & Writer to edit",
-
-  "tooltip.securelib.editor.edit": "Use a Card Writer to edit"
+  "tooltip.securelib.data_receiver": "Data Receiver: Press [SHIFT] for more info",
+  "tooltip.securelib.data_receiver.clearance": "Clearance:",
+  "tooltip.securelib.data_receiver.color": "Color:",
+  "tooltip.securelib.data_receiver.frequency": "Frequency:",
+  "tooltip.securelib.data_receiver.no_data": "No data yet",
+  "tooltip.securelib.data_receiver.edit_double": "Use a Card Printer & Writer to edit",
+  "tooltip.securelib.data_receiver.edit_color": "Use a Card Printer to edit",
+  "tooltip.securelib.data_receiver.edit_data": "Use a Card Writer to edit"
 }
