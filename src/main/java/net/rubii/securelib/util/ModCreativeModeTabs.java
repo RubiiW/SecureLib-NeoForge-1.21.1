@@ -1,4 +1,4 @@
-package net.rubii.securelib.item;
+package net.rubii.securelib.util;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -10,6 +10,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.block.ModBlocks;
+import net.rubii.securelib.item.ModItems;
 
 import java.util.function.Supplier;
 

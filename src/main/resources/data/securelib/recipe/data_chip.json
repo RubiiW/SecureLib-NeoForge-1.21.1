@@ -6,7 +6,7 @@
       "item": "minecraft:redstone"
     },
     {
-      "item": "minecraft:gold_nugget"
+      "tag": "c:nuggets/gold"
     },
     {
       "item": "minecraft:quartz"

@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "IGI",
+    "IPI",
+    "MLC"
+  ],
+  "key": {
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "P": {
+      "tag": "c:glass_panes"
+    },
+    "M": {
+      "tag": "c:dyes/magenta"
+    },
+    "L": {
+      "tag": "c:dyes/yellow"
+    },
+    "C": {
+      "tag": "c:dyes/light_blue"
+    }
+  },
+  "result": {
+    "id": "securelib:card_printer",
+    "count": 1
+  }
+}

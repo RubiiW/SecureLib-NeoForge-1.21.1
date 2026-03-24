@@ -26,7 +26,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 import net.rubii.securelib.block.ModBlocks;
-import net.rubii.securelib.item.ModCreativeModeTabs;
+import net.rubii.securelib.util.ModCreativeModeTabs;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(SecureLib.MODID)
@@ -66,7 +66,7 @@ public class SecureLib {
 
         @SubscribeEvent
         public static void registerBER(EntityRenderersEvent.RegisterRenderers event){
-            event.registerBlockEntityRenderer(ModBlockEntities.CARD_WRITER_BE.get(), CardWriterBlocKEntityRenderer::new);
+            //event.registerBlockEntityRenderer(ModBlockEntities.CARD_WRITER_BE.get(), CardWriterBlocKEntityRenderer::new);
         }
 
     }

@@ -198,7 +198,7 @@ public class CardReaderBlock extends BaseEntityBlock {
                         player.displayClientMessage(Component.translatable("block.securelib.card_reader.need_keycard"), true);
                     }
                 }
-                return ItemInteractionResult.SUCCESS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
 
         } else {

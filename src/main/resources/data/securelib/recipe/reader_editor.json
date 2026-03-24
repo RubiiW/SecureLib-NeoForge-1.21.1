@@ -3,17 +3,17 @@
   "category": "redstone",
   "ingredients": [
     {
-      "tag": "c:nuggets/iron"
+      "item": "minecraft:redstone"
     },
     {
-      "item": "minecraft:string"
+      "item": "securelib:data_chip"
     },
     {
-      "item": "minecraft:paper"
+      "tag": "c:ingots/iron"
     }
   ],
   "result": {
-    "id": "securelib:magnetic_band",
+    "id": "securelib:reader_editor",
     "count": 1
   }
 }
