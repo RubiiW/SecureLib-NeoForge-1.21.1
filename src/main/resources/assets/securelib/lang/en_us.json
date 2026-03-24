@@ -35,5 +35,7 @@
   "tooltip.securelib.data_receiver.no_data": "No data yet",
   "tooltip.securelib.data_receiver.edit_double": "Use a Card Printer & Writer to edit",
   "tooltip.securelib.data_receiver.edit_color": "Use a Card Printer to edit",
-  "tooltip.securelib.data_receiver.edit_data": "Use a Card Writer to edit"
+  "tooltip.securelib.data_receiver.edit_data": "Use a Card Writer to edit",
+
+  "tooltip.securelib.card_readers": "Use a Reader Editor to configure"
 }

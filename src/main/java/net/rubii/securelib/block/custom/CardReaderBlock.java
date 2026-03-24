@@ -1,6 +1,9 @@
 package net.rubii.securelib.block.custom;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,7 +13,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,19 +44,39 @@ import net.rubii.securelib.network.CardReaderTickerPayload;
 import net.rubii.securelib.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
 
 import static net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock.FACE;
 
 public class CardReaderBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    public static final MapCodec<CardReaderBlock> CODEC = simpleCodec(CardReaderBlock::new);
+    private static String tooltip;
+
+    public static final MapCodec<CardReaderBlock> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(CardReaderBlock::getProperties),
+                    Codec.STRING.fieldOf("tooltip_key").forGetter(block -> tooltip)
+            ).apply(instance, CardReaderBlock::new)
+    );
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public CardReaderBlock(BlockBehaviour.Properties properties) {
+    public CardReaderBlock(BlockBehaviour.Properties properties, String tooltipKey) {
         super(properties.strength(30f).sound(SoundType.METAL)
                 .destroyTime(99999999999999f).requiresCorrectToolForDrops().noOcclusion());
+        tooltip = tooltipKey;
+    }
+
+    public BlockBehaviour.Properties getProperties() {
+        return this.properties;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
+        components.add(Component.translatable("tooltip.securelib.card_readers").withStyle(ChatFormatting.GRAY));
+        if (tooltip == null || tooltip == "") return;
+        components.add(Component.translatable(tooltip).withStyle(ChatFormatting.GRAY));
     }
 
     @Override

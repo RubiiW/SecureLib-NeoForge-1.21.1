@@ -9,7 +9,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -30,6 +32,7 @@ import net.rubii.securelib.block.entity.CardWriterBlockEntity;
 import net.rubii.securelib.block.entity.ModBlockEntities;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class CardWriterBlock extends BaseEntityBlock {
     public static final MapCodec<CardWriterBlock> CODEC = simpleCodec(CardWriterBlock::new);
@@ -106,7 +109,7 @@ public class CardWriterBlock extends BaseEntityBlock {
                 if(player.isCrouching()){
                     return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                 } else {
-                    ((ServerPlayer) player).openMenu(new SimpleMenuProvider(cardWriterBlockEntity, Component.translatable("block.securelib.card_writer")), pos);
+                    player.openMenu(new SimpleMenuProvider(cardWriterBlockEntity, Component.translatable("block.securelib.card_writer")), pos);
                     return ItemInteractionResult.SUCCESS;
                 }
             }
