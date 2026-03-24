@@ -31,9 +31,9 @@ public class ModCreativeModeTabs {
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.KEYCARD);
                         output.accept(ModItems.OPERATOR_KEYCARD);
-                        output.accept(ModItems.READER_EDITOR);
-
                         output.accept(ModItems.BLANK_CARD);
+
+                        output.accept(ModItems.READER_EDITOR);
                         output.accept(ModItems.MAGNETIC_BAND);
                         output.accept(ModItems.DATA_CHIP);
 
