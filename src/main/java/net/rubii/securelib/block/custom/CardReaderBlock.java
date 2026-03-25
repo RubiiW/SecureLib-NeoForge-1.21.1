@@ -204,7 +204,7 @@ public class CardReaderBlock extends BaseEntityBlock {
 
             if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
                 return readerEditor(blockEntity, stack, pos, player);
-            }else if (player.getItemInHand(hand).is(ModItems.KEYCARD)){
+            }else if (player.getItemInHand(hand).is(ModTags.Items.KEYCARDS)){
                 return keycard(blockEntity, stack, state, level, pos, player);
             }else {
                 if (blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0){
@@ -261,13 +261,15 @@ public class CardReaderBlock extends BaseEntityBlock {
         Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
         Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
 
-        if (keycardClearance == null || keycardFrequency == null) {
+        if ((keycardClearance == null || keycardFrequency == null) && !stack.is(ModTags.Items.SKELETON_KEYCARDS)) {
             player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
             return ItemInteractionResult.SUCCESS;
         }
 
         if (blockEntity instanceof CardReaderBlockEntity be) {
-            if (be.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) && Objects.equals(be.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))) {
+            if (stack.is(ModTags.Items.SKELETON_KEYCARDS)){
+                activate(level, state, player, pos);
+            } else if (be.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) && Objects.equals(be.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))) {
                 activate(level, state, player, pos);
             } else if ((be.getClearance() == 0 && be.getFrequency() == 0) || (be.getClearance() == null && be.getFrequency() == null)) {
                 player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
