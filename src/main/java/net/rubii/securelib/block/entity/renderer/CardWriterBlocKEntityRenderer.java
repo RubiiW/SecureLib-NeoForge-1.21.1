@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.rubii.securelib.block.entity.CardWriterBlockEntity;
 
 import static net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;

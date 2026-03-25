@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.rubii.securelib.block.custom.CardWriterBlock;
 import net.rubii.securelib.components.ModDataComponents;
-import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.screen.custom.CardWriterMenu;
 import net.rubii.securelib.util.ModTags;
 

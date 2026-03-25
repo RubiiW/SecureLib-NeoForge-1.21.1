@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import net.rubii.securelib.block.ModBlocks;
 import net.rubii.securelib.block.entity.CardPrinterBlockEntity;
-import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.screen.ModMenuTypes;
 import net.rubii.securelib.util.ModTags;
 

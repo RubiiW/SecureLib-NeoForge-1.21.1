@@ -1,6 +1,5 @@
 package net.rubii.securelib.item;
 
-
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;

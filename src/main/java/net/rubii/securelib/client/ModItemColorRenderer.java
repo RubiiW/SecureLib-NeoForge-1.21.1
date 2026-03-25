@@ -1,7 +1,6 @@
 package net.rubii.securelib.client;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -9,7 +8,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.item.ModItems;
-import net.rubii.securelib.util.ModTags;
 
 @EventBusSubscriber(modid = SecureLib.MODID, value = Dist.CLIENT)
 public class ModItemColorRenderer {

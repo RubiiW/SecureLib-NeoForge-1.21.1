@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.rubii.securelib.block.custom.CardReaderBlock;
-import net.rubii.securelib.util.ModTags;
 
 import javax.annotation.Nullable;
 
