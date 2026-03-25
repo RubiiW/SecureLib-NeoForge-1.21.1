@@ -58,8 +58,7 @@ public class CardReaderBlock extends BaseEntityBlock {
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     public CardReaderBlock(BlockBehaviour.Properties properties) {
-        super(properties.strength(30f).sound(SoundType.METAL)
-                .destroyTime(99999999999999f).requiresCorrectToolForDrops().noOcclusion());
+        super(properties);
     }
 
     @Override
@@ -164,7 +163,9 @@ public class CardReaderBlock extends BaseEntityBlock {
         ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
         CardReaderBlockEntity blockEntity = (CardReaderBlockEntity)level.getBlockEntity(pos);
 
-        if(!level.isClientSide() && stack.is(ModItems.READER_EDITOR)){
+        if (level.isClientSide()) return 0;
+
+        if(stack.is(ModItems.READER_EDITOR)){
             if (
             blockEntity.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) &&
             Objects.equals(blockEntity.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))
@@ -173,8 +174,14 @@ public class CardReaderBlock extends BaseEntityBlock {
             } else {
                 player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
             }
+            return 0;
+        } else if (blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0) {
+            player.displayClientMessage(Component.translatable("block.securelib.card_reader.destroy_requirement"), true);
+            return 0;
+        } else {
+            player.displayClientMessage(Component.translatable("block.securelib.card_reader.destroy_process"), true);
+            return 0;
         }
-        return 0;
     }
 
     @Override

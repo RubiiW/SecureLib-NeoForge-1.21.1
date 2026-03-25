@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -59,18 +58,28 @@ public class CardWriterScreen extends AbstractContainerScreen<CardWriterMenu> {
 
         //Buttons
 
-        WidgetSprites buttonUpSprites = new WidgetSprites(BUTTON_UP, BUTTON_UP_DISABLED, BUTTON_UP, BUTTON_UP_PRESSED);
-        WidgetSprites buttonDownSprites = new WidgetSprites(BUTTON_DOWN, BUTTON_DOWN_DISABLED, BUTTON_DOWN, BUTTON_DOWN_PRESSED);
+        WidgetSprites buttonUpSprites = new WidgetSprites(BUTTON_UP, BUTTON_UP_DISABLED, BUTTON_UP_PRESSED, BUTTON_UP);
+        WidgetSprites buttonDownSprites = new WidgetSprites(BUTTON_DOWN, BUTTON_DOWN_DISABLED, BUTTON_DOWN_PRESSED, BUTTON_DOWN);
 
         increaseClearanceButton = new ImageButton(leftPos + 34, topPos + 40, 18, 9, buttonUpSprites, button -> {
             updateClearance(menu.blockEntity.getClearance() + 1);
-        });
+        }){
+            @Override
+            public void renderWidget(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
+                guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+            }
+        };
 
         addRenderableWidget(increaseClearanceButton);
 
         decreaseClearanceButton = new ImageButton(leftPos + 34, topPos + 67, 18, 9, buttonDownSprites, button -> {
             updateClearance(menu.blockEntity.getClearance() - 1);
-        });
+        }){
+            @Override
+            public void renderWidget(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
+                guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+            }
+        };
 
         addRenderableWidget(decreaseClearanceButton);
     }

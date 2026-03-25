@@ -21,15 +21,17 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SecureLib.MODID);
 
     public static final DeferredBlock<Block> CARD_READER = registerBlock("card_reader", () ->
-            new CardReaderBlock(BlockBehaviour.Properties.of()));
+            new CardReaderBlock(BlockBehaviour.Properties.of()
+            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
+    ));
 
     public static final DeferredBlock<Block> CARD_PRINTER = registerBlock("card_printer", () ->
             new CardPrinterBlock(BlockBehaviour.Properties.of()
-            .strength(30f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
+            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
     ));
     public static final DeferredBlock<Block> CARD_WRITER = registerBlock("card_writer", () ->
             new CardWriterBlock(BlockBehaviour.Properties.of()
-            .strength(30f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
+            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
     ));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {

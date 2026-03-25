@@ -7,6 +7,8 @@
   "block.securelib.card_reader.need_keycard": "Use a Keycard to operate this block",
   "block.securelib.card_reader.data_mismatch": "Frequency or Clearance does not match",
   "block.securelib.card_reader.removal": "Left Click this block to remove it",
+  "block.securelib.card_reader.destroy_process": "Left Click with a configured Reader Editor to remove",
+  "block.securelib.card_reader.destroy_requirement": "The Reader needs to be configured in order to be removed",
 
   "block.securelib.card_printer": "Card Printer",
   "block.securelib.card_printer.default_name": "Keycard Name",
