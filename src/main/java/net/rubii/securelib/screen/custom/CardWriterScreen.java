@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -58,8 +59,8 @@ public class CardWriterScreen extends AbstractContainerScreen<CardWriterMenu> {
 
         //Buttons
 
-        WidgetSprites buttonUpSprites = new WidgetSprites(BUTTON_UP, BUTTON_UP_DISABLED, BUTTON_UP_PRESSED, BUTTON_UP);
-        WidgetSprites buttonDownSprites = new WidgetSprites(BUTTON_DOWN, BUTTON_DOWN_DISABLED, BUTTON_DOWN_PRESSED, BUTTON_DOWN);
+        WidgetSprites buttonUpSprites = new WidgetSprites(BUTTON_UP, BUTTON_UP_DISABLED, BUTTON_UP, BUTTON_UP_PRESSED);
+        WidgetSprites buttonDownSprites = new WidgetSprites(BUTTON_DOWN, BUTTON_DOWN_DISABLED, BUTTON_DOWN, BUTTON_DOWN_PRESSED);
 
         increaseClearanceButton = new ImageButton(leftPos + 34, topPos + 40, 18, 9, buttonUpSprites, button -> {
             updateClearance(menu.blockEntity.getClearance() + 1);
