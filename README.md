@@ -6,6 +6,7 @@
 
 ## FEATURES:
 - **Keycard (Customizable)**
+- **Operator Keycard (Admin Only Skeleton Keycard)**
 - **Card Reader**
 - **Card Writer & Printer**
 - **Reader Editor**
