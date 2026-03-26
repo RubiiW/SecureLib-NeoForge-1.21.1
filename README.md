@@ -3,6 +3,7 @@
 # USAGE
 **If you want to use this mod as a library, here is a quick tutorial on how to implement SecureLib into your project**
 (This part is still work in progress, for now, use your own knowledge.)
+[![](https://jitpack.io/v/RubiiW/SecureLib-NeoForge-1.21.1.svg)](https://jitpack.io/#RubiiW/SecureLib-NeoForge-1.21.1)
 
 ## FEATURES:
 - **Keycard (Customizable)**
