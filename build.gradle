@@ -148,7 +148,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_license            : mod_license,
             mod_version            : mod_version,
             git_username           : git_username,
-            git_token              : git_token,
+            git_token              : git_token
     ]
     inputs.properties replaceProperties
     expand replaceProperties
@@ -173,7 +173,6 @@ publishing {
     }
     repositories {
         maven {
-            name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/RubiiW/SecureLib-NeoForge-1.21.1")
             credentials {
                 username = git_username
