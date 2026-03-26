@@ -2,8 +2,45 @@
 
 # USAGE
 **If you want to use this mod as a library, here is a quick tutorial on how to implement SecureLib into your project**
-(This part is still work in progress, for now, use your own knowledge.)
-[![](https://jitpack.io/v/RubiiW/SecureLib-NeoForge-1.21.1.svg)](https://jitpack.io/#RubiiW/SecureLib-NeoForge-1.21.1)
+
+Inside your ```build.gradle```, edit the ```repositories``` category to include ```maven { url 'https://jitpack.io' }```. It should look like this:
+
+```
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
+
+Then, still in your ```build.gradle```, edit the ```dependencies``` category to include ```implementation 'com.github.RubiiW:SecureLib-NeoForge-1.21.1:VERSION'```.
+
+It should look like this. Make sure to replace ```VERSION``` with the version of the mod you want to use (for instance, the currently latest ```1.4.4```).
+```
+dependencies {
+    implementation 'com.github.RubiiW:SecureLib-NeoForge-1.21.1:VERSION'
+}
+```
+<details>
+  <summary>Usage Example</summary>
+  
+  As an example, you can create your own Card Reader by registering a block of type CardReaderBlock
+
+```
+import net.rubii.securelib.block.custom.CardReaderBlock;
+```
+You will also need to register this block in your main mod class as a card reader
+
+```
+import net.rubii.securelib.api.CardReaderRegistry;
+
+@Mod(YourModClass.MODID)
+public class YourModClass {
+  public YourModClass(IEventBus modEventBus, ModContainer modContainer) {
+        CardReaderRegistry.register(YourModBlocksClass.CUSTOM_CARD_READER);
+        //Add the remaining calls and functions below
+  }
+}
+```
+</details>
 
 ## FEATURES:
 - **Keycard (Customizable)**
