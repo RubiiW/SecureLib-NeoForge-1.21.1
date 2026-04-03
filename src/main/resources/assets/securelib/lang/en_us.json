@@ -1,6 +1,10 @@
 {
+  "block.securelib.keypad": "Keypad",
+  "block.securelib.keypad.code_set": "This Keypad has been configured",
+  "block.securelib.keypad.destroy_requirement": "The Keypad needs to be configured in order to be removed",
+  "block.securelib.keypad.destroy_process": "Crouch-Left click and enter the code to remove",
+
   "block.securelib.card_reader": "Card Reader",
-  "block.securelib.card_reader.configured": "The Reader has been configured to your Editor's Frequency and Clearance",
   "block.securelib.card_reader.already_configured": "This Reader is already configured",
   "block.securelib.card_reader.missing_data": "Use a Reader Editor to configure this block",
   "block.securelib.card_reader.editor_missing_data": "You need to configure your Editor in a Card Writer first",
@@ -39,5 +43,7 @@
   "tooltip.securelib.data_receiver.edit_color": "Use a Card Printer to edit",
   "tooltip.securelib.data_receiver.edit_data": "Use a Card Writer to edit",
 
-  "tooltip.securelib.card_readers": "Use a Reader Editor to configure"
+  "tooltip.securelib.card_readers": "Use a Reader Editor to configure",
+
+  "tooltip.securelib.keypads": "Place it and right click to configure"
 }

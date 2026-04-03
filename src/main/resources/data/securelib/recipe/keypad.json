@@ -4,7 +4,7 @@
   "pattern": [
     "IG",
     "ID",
-    "II"
+    "IB"
   ],
   "key": {
     "I": {
@@ -15,10 +15,13 @@
     },
     "D": {
       "item": "securelib:data_chip"
+    },
+    "B": {
+      "tag": "minecraft:buttons"
     }
   },
   "result": {
-    "id": "securelib:card_reader",
+    "id": "securelib:keypad",
     "count": 1
   }
 }

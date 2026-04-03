@@ -2,14 +2,15 @@ package net.rubii.securelib.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,11 +19,11 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -33,12 +34,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.block.entity.CardReaderBlockEntity;
-import net.rubii.securelib.block.entity.ModBlockEntities;
-import net.rubii.securelib.components.ModDataComponents;
-import net.rubii.securelib.item.ModItems;
-import net.rubii.securelib.network.CardReaderPayload;
-import net.rubii.securelib.util.ModTags;
+import net.rubii.securelib.block.entity.KeypadBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -46,21 +42,20 @@ import java.util.Objects;
 
 import static net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock.FACE;
 
-public class CardReaderBlock extends BaseEntityBlock {
+public class KeypadBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    private static String tooltip;
 
-    public static final MapCodec<CardReaderBlock> CODEC = simpleCodec(CardReaderBlock::new);
+    public static final MapCodec<KeypadBlock> CODEC = simpleCodec(KeypadBlock::new);
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public CardReaderBlock(BlockBehaviour.Properties properties) {
+    public KeypadBlock(Properties properties) {
         super(properties);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
-        components.add(Component.translatable("tooltip.securelib.card_readers").withStyle(ChatFormatting.GRAY));
+        components.add(Component.translatable("tooltip.securelib.keypads").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
@@ -141,13 +136,13 @@ public class CardReaderBlock extends BaseEntityBlock {
     @Override
     @Nullable
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new CardReaderBlockEntity(blockPos, blockState);
+        return new KeypadBlockEntity(blockPos, blockState);
     }
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()) {
-            if (level.getBlockEntity(pos) instanceof CardReaderBlockEntity){
+            if (level.getBlockEntity(pos) instanceof KeypadBlockEntity) {
                 level.removeBlockEntity(pos);
                 level.updateNeighbourForOutputSignal(pos, this);
             }
@@ -157,27 +152,20 @@ public class CardReaderBlock extends BaseEntityBlock {
     @Override
     protected float getDestroyProgress(BlockState state, Player player, BlockGetter getter, BlockPos pos) {
         Level level = player.level();
-        ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
-        CardReaderBlockEntity blockEntity = (CardReaderBlockEntity)level.getBlockEntity(pos);
+        KeypadBlockEntity blockEntity = (KeypadBlockEntity)level.getBlockEntity(pos);
 
         if (level.isClientSide()) return 0;
 
-        if(stack.is(ModItems.READER_EDITOR)){
-            if (
-            blockEntity.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) &&
-            Objects.equals(blockEntity.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))
-            ){
-                level.destroyBlock(pos, true);
-                level.updateNeighbourForOutputSignal(pos, this);
-            } else {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
-            }
+        if (Objects.equals(blockEntity.getCode(), "")) {
+            player.displayClientMessage(Component.translatable("block.securelib.keypad.destroy_requirement"), true);
             return 0;
-        } else if (blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0) {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.destroy_requirement"), true);
+        } else if (player.isCrouching()) {
+            SecureLib.LOGGER.info("open");
+            open(level, pos, player);
+            blockEntity.setRemoval(true);
             return 0;
         } else {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.destroy_process"), true);
+            player.displayClientMessage(Component.translatable("block.securelib.keypad.destroy_process"), true);
             return 0;
         }
     }
@@ -199,108 +187,46 @@ public class CardReaderBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof CardReaderBlockEntity) {
-            CardReaderBlockEntity blockEntity = (CardReaderBlockEntity) level.getBlockEntity(pos);
-
-            if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
-                return readerEditor(blockEntity, stack, pos, player);
-            }else if (player.getItemInHand(hand).is(ModTags.Items.KEYCARDS)){
-                return keycard(blockEntity, stack, state, level, pos, player);
-            }else {
-                if (blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0){
-                    player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
-                } else {
-                    if (player.getItemInHand(hand).is(ModTags.Items.SKELETON_KEYCARDS)) {
-                        activate(level, state, player, pos);
-                    }else{
-                        player.displayClientMessage(Component.translatable("block.securelib.card_reader.need_keycard"), true);
-                    }
-                }
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-            }
-
-        } else {
-            SecureLib.LOGGER.error("CardReaderBlock is not a CardReaderBlockEntity at pos: " + pos);
-            return ItemInteractionResult.FAIL;
-        }
+        return open(level, pos, player) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    public ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player){
-        Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
-        Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
-
-        if (keycardClearance == null || keycardFrequency == null) {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.editor_missing_data"), true);
-            return ItemInteractionResult.SUCCESS;
-        }
-
-        if (blockEntity instanceof CardReaderBlockEntity be){
-            if (
-                    be.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) &&
-                            Objects.equals(be.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))
-            ) {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.removal"), true);
-                return ItemInteractionResult.SUCCESS;
-            } else if (be.getClearance() == 0 && be.getFrequency() == 0) {
-                Minecraft.getInstance().getConnection().send(
-                        new CardReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
-                );
-                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-                return ItemInteractionResult.SUCCESS;
-            } else {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.already_configured"), true);
-
-                return ItemInteractionResult.SUCCESS;
-            }
-        }
-
-        return ItemInteractionResult.SUCCESS;
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        return open(level, pos, player) ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
-    public ItemInteractionResult keycard(BlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player){
-        Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
-        Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
-
-        if ((keycardClearance == null || keycardFrequency == null) && !stack.is(ModTags.Items.SKELETON_KEYCARDS)) {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
-            return ItemInteractionResult.SUCCESS;
-        }
-
-        if (blockEntity instanceof CardReaderBlockEntity be) {
-            if (stack.is(ModTags.Items.SKELETON_KEYCARDS)){
-                activate(level, state, player, pos);
-            } else if (be.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) && Objects.equals(be.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))) {
-                activate(level, state, player, pos);
-            } else if ((be.getClearance() == 0 && be.getFrequency() == 0) || (be.getClearance() == null && be.getFrequency() == null)) {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
-            } else {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
-
-                return ItemInteractionResult.SUCCESS;
+    public boolean open(Level level, BlockPos pos, Player player) {
+        if(level.getBlockEntity(pos) instanceof KeypadBlockEntity blockEntity){
+            if (!level.isClientSide){
+                player.openMenu(new SimpleMenuProvider(blockEntity, Component.translatable("block.securelib.keypad")), pos);
+                return true;
             }
         }
 
-        return  ItemInteractionResult.SUCCESS;
+        return false;
     }
 
     public void activate(Level level, BlockState state, Player player, BlockPos pos) {
         if (!level.isClientSide() && !state.getValue(POWERED)) {
-
+            player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {
                 power(false, state, level, pos, player);
+                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
             });
         }
     }
 
     public void power(boolean value, BlockState state, Level level, BlockPos pos, Player player) {
-        level.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(value)), 3);
-        level.updateNeighborsAt(pos, this);
-        level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
-        level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
+        if (level.getBlockEntity(pos) instanceof KeypadBlockEntity){
+            level.setBlock(pos, state.setValue(POWERED, Boolean.valueOf(value)), 3);
+            level.updateNeighborsAt(pos, this);
+            level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
+            level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
 
-        if (player == null) return;
-        player.playNotifySound(value ? SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON : SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+            if (player == null) return;
+            player.playNotifySound(value ? SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON : SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+        }
     }
 
     private Direction getConnectedDirection(BlockState state) {

@@ -1,0 +1,110 @@
+{
+  "variants": {
+    "face=ceiling,facing=north,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "x": 90
+    },
+    "face=ceiling,facing=south,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 180,
+      "x": 90
+    },
+    "face=ceiling,facing=east,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 90,
+      "x": 90
+    },
+    "face=ceiling,facing=west,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 270,
+      "x": 90
+    },
+    "face=wall,facing=north,powered=false": {
+      "model": "securelib:block/keypad_reader_off"
+    },
+    "face=wall,facing=south,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 180
+    },
+    "face=wall,facing=east,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 90
+    },
+    "face=wall,facing=west,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 270
+    },
+    "face=floor,facing=north,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "x": -90
+    },
+    "face=floor,facing=south,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 180,
+      "x": -90
+    },
+    "face=floor,facing=east,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 90,
+      "x": -90
+    },
+    "face=floor,facing=west,powered=false": {
+      "model": "securelib:block/keypad_reader_off",
+      "y": 270,
+      "x": -90
+    },
+    "face=ceiling,facing=north,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "x": 90
+    },
+    "face=ceiling,facing=south,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 180,
+      "x": 90
+    },
+    "face=ceiling,facing=east,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 90,
+      "x": 90
+    },
+    "face=ceiling,facing=west,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 270,
+      "x": 90
+    },
+    "face=wall,facing=north,powered=true": {
+      "model": "securelib:block/keypad_reader_on"
+    },
+    "face=wall,facing=south,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 180
+    },
+    "face=wall,facing=east,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 90
+    },
+    "face=wall,facing=west,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 270
+    },
+    "face=floor,facing=north,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "x": -90
+    },
+    "face=floor,facing=south,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 180,
+      "x": -90
+    },
+    "face=floor,facing=east,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 90,
+      "x": -90
+    },
+    "face=floor,facing=west,powered=true": {
+      "model": "securelib:block/keypad_reader_on",
+      "y": 270,
+      "x": -90
+    }
+  }
+}

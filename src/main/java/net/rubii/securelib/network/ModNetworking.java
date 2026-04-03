@@ -7,27 +7,15 @@ import net.rubii.securelib.block.entity.CardPrinterBlockEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.rubii.securelib.block.entity.CardReaderBlockEntity;
 import net.rubii.securelib.block.entity.CardWriterBlockEntity;
+import net.rubii.securelib.block.entity.KeypadBlockEntity;
+
+import java.util.UUID;
 
 public class ModNetworking {
 
     @SubscribeEvent
     public static void register(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
-
-        registrar.playToServer(
-                CardPrinterPayload.TYPE,
-                CardPrinterPayload.STREAM_CODEC,
-                (payload, context) -> {
-                    context.enqueueWork(() -> {
-                        ServerPlayer player = (ServerPlayer) context.player();
-                        if (player.level().getBlockEntity(payload.blockPos()) instanceof CardPrinterBlockEntity printer) {
-                            printer.setName(payload.name());
-                            printer.setColor(payload.color());
-                            printer.setChanged();
-                        }
-                    });
-                }
-        );
 
         registrar.playToServer(
                 CardReaderPayload.TYPE,
@@ -45,14 +33,44 @@ public class ModNetworking {
         );
 
         registrar.playToServer(
-                CardReaderTickerPayload.TYPE,
-                CardReaderTickerPayload.STREAM_CODEC,
+                KeypadPayloadCode.TYPE,
+                KeypadPayloadCode.STREAM_CODEC,
                 (payload, context) -> {
                     context.enqueueWork(() -> {
                         ServerPlayer player = (ServerPlayer) context.player();
-                        if (player.level().getBlockEntity(payload.blockPos()) instanceof CardReaderBlockEntity reader) {
-                            reader.setTimer(payload.timer());
-                            reader.setChanged();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadBlockEntity keypad) {
+                            keypad.setCode(payload.code());
+                            keypad.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
+                KeypadPayloadInput.TYPE,
+                KeypadPayloadInput.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadBlockEntity keypad) {
+                            keypad.setInput(payload.input());
+                            keypad.inputUpdated(UUID.fromString(payload.uuid()));
+                            keypad.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
+                CardPrinterPayload.TYPE,
+                CardPrinterPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof CardPrinterBlockEntity printer) {
+                            printer.setName(payload.name());
+                            printer.setColor(payload.color());
+                            printer.setChanged();
                         }
                     });
                 }

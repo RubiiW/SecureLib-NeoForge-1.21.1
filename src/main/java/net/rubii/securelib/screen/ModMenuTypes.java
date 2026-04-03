@@ -11,10 +11,14 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.screen.custom.CardPrinterMenu;
 import net.rubii.securelib.screen.custom.CardWriterMenu;
+import net.rubii.securelib.screen.custom.KeypadMenu;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(Registries.MENU, SecureLib.MODID);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<KeypadMenu>> KEYPAD_MENU =
+            registerMenuType("keypad_menu", KeypadMenu::new);
 
     public static final DeferredHolder<MenuType<?>, MenuType<CardPrinterMenu>> CARD_PRINTER_MENU =
             registerMenuType("card_printer_menu", CardPrinterMenu::new);

@@ -1,6 +1,6 @@
 {
 	"format_version": "1.9.0",
-	"credit": "Made with Blockbench",
+	"credit": "Made with Blockbench by RubiiW",
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "securelib:block/card_writer",
