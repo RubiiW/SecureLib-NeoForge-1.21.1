@@ -3,11 +3,8 @@ package net.rubii.securelib.network;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.rubii.securelib.block.entity.CardPrinterBlockEntity;
+import net.rubii.securelib.block.entity.*;
 import net.minecraft.server.level.ServerPlayer;
-import net.rubii.securelib.block.entity.CardReaderBlockEntity;
-import net.rubii.securelib.block.entity.CardWriterBlockEntity;
-import net.rubii.securelib.block.entity.KeypadBlockEntity;
 
 import java.util.UUID;
 
@@ -53,6 +50,35 @@ public class ModNetworking {
                     context.enqueueWork(() -> {
                         ServerPlayer player = (ServerPlayer) context.player();
                         if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadBlockEntity keypad) {
+                            keypad.setInput(payload.input());
+                            keypad.inputUpdated(UUID.fromString(payload.uuid()));
+                            keypad.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
+                KeypadReaderPayloadCode.TYPE,
+                KeypadReaderPayloadCode.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadReaderBlockEntity keypad) {
+                            keypad.setCode(payload.code());
+                            keypad.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
+                KeypadReaderPayloadInput.TYPE,
+                KeypadReaderPayloadInput.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadReaderBlockEntity keypad) {
                             keypad.setInput(payload.input());
                             keypad.inputUpdated(UUID.fromString(payload.uuid()));
                             keypad.setChanged();

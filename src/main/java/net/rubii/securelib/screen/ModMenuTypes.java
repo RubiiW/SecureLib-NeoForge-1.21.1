@@ -12,6 +12,7 @@ import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.screen.custom.CardPrinterMenu;
 import net.rubii.securelib.screen.custom.CardWriterMenu;
 import net.rubii.securelib.screen.custom.KeypadMenu;
+import net.rubii.securelib.screen.custom.KeypadReaderMenu;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -19,6 +20,9 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<KeypadMenu>> KEYPAD_MENU =
             registerMenuType("keypad_menu", KeypadMenu::new);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<KeypadReaderMenu>> KEYPAD_READER_MENU =
+            registerMenuType("keypad_reader_menu", KeypadReaderMenu::new);
 
     public static final DeferredHolder<MenuType<?>, MenuType<CardPrinterMenu>> CARD_PRINTER_MENU =
             registerMenuType("card_printer_menu", CardPrinterMenu::new);

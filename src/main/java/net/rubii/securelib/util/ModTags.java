@@ -11,6 +11,8 @@ import net.rubii.securelib.SecureLib;
 public class ModTags {
     public static class Blocks {
         public static final TagKey<Block> CARD_READERS = createTag("card_readers");
+        public static final TagKey<Block> KEYPADS = createTag("keypads");
+        public static final TagKey<Block> KEYPAD_READERS = createTag("keypad_readers");
 
         private static TagKey<Block> createTag(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, name));

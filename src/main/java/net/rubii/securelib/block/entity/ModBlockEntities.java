@@ -21,9 +21,9 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("keypad_be", () -> BlockEntityType.Builder.of(
                     KeypadBlockEntity::new, SecureLibBlocksRegistry.getKeypads()).build(null));
 
-    /*public static final Supplier<BlockEntityType<KeypadReaderBlockEntity>> KEYPAD_READER_BE =
+    public static final Supplier<BlockEntityType<KeypadReaderBlockEntity>> KEYPAD_READER_BE =
             BLOCK_ENTITIES.register("keypad_reader_be", () -> BlockEntityType.Builder.of(
-                    KeypadReaderBlockEntity::new, SecureLibBlocksRegistry.getKeypadReaders()).build(null));*/
+                    KeypadReaderBlockEntity::new, SecureLibBlocksRegistry.getKeypadReaders()).build(null));
 
     public static final Supplier<BlockEntityType<CardPrinterBlockEntity>> CARD_PRINTER_BE =
             BLOCK_ENTITIES.register("card_printer_be", () -> BlockEntityType.Builder.of(

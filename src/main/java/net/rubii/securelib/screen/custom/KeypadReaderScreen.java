@@ -12,14 +12,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.block.entity.KeypadBlockEntity;
-import net.rubii.securelib.network.KeypadPayloadCode;
-import net.rubii.securelib.network.KeypadPayloadInput;
+import net.rubii.securelib.network.KeypadReaderPayloadCode;
+import net.rubii.securelib.network.KeypadReaderPayloadInput;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
+public class KeypadReaderScreen extends AbstractContainerScreen<KeypadReaderMenu> {
     private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "textures/gui/keypad.png");
     private static final ResourceLocation KEY_BUTTON = ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "textures/gui/buttons/key.png");
     private static final ResourceLocation KEY_BUTTON_PRESSED = ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "textures/gui/buttons/key_pressed.png");
@@ -32,7 +28,7 @@ public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
 
     private Player player;
 
-    public KeypadScreen(KeypadMenu menu, Inventory inv, Component title) {
+    public KeypadReaderScreen(KeypadReaderMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
         this.player = Minecraft.getInstance().player;
     }
@@ -199,13 +195,13 @@ public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
         if (input.length() > 16) return;
         if (menu.blockEntity.getCode().isEmpty()){
             minecraft.getConnection().send(
-                    new KeypadPayloadCode(menu.blockEntity.getBlockPos(), input)
+                    new KeypadReaderPayloadCode(menu.blockEntity.getBlockPos(), input)
             );
-            player.displayClientMessage(Component.translatable("block.securelib.keypad.code_set"), true);
+            player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.code_set"), true);
             input = "";
         }
         minecraft.getConnection().send(
-                new KeypadPayloadInput(menu.blockEntity.getBlockPos(), input, player.getStringUUID())
+                new KeypadReaderPayloadInput(menu.blockEntity.getBlockPos(), input, player.getStringUUID())
         );
         player.closeContainer();
     }

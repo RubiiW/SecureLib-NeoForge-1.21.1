@@ -9,10 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.block.custom.CardPrinterBlock;
-import net.rubii.securelib.block.custom.CardReaderBlock;
-import net.rubii.securelib.block.custom.CardWriterBlock;
-import net.rubii.securelib.block.custom.KeypadBlock;
+import net.rubii.securelib.block.custom.*;
 import net.rubii.securelib.item.ModItems;
 
 import java.util.function.Supplier;
@@ -31,7 +28,7 @@ public class ModBlocks {
     ));
 
     public static final DeferredBlock<Block> KEYPAD_READER = registerBlock("keypad_reader", () ->
-            new Block(BlockBehaviour.Properties.of()
+            new KeypadReaderBlock(BlockBehaviour.Properties.of()
             .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
     ));
 

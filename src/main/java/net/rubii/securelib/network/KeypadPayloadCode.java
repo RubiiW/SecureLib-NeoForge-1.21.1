@@ -11,7 +11,7 @@ import net.rubii.securelib.SecureLib;
 public record KeypadPayloadCode(BlockPos blockPos, String code) implements CustomPacketPayload {
 
     public static final Type<KeypadPayloadCode> TYPE =
-            new Type<>(ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "set_keypad_data"));
+            new Type<>(ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "set_keypad_code"));
 
     public static final StreamCodec<FriendlyByteBuf, KeypadPayloadCode> STREAM_CODEC =
             StreamCodec.composite(
