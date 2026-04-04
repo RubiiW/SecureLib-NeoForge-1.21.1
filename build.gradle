@@ -171,17 +171,6 @@ publishing {
             version = mod_version
         }
     }
-    repositories {
-        if (project.hasProperty('git_username') && project.hasProperty('git_token')) {
-            maven {
-                url = uri("https://maven.pkg.github.com/RubiiW/SecureLib-NeoForge-1.21.1")
-                credentials {
-                    username = project.property('git_username')
-                    password = project.property('git_token')
-                }
-            }
-        }
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {
