@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.block.entity.KeypadBlockEntity;
+import net.rubii.securelib.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -187,6 +188,7 @@ public class KeypadBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (stack.is(ModTags.Items.KEYPAD_BYPASS)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         return open(level, pos, player) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
