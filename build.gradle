@@ -172,11 +172,13 @@ publishing {
         }
     }
     repositories {
-        maven {
-            url = uri("https://maven.pkg.github.com/RubiiW/SecureLib-NeoForge-1.21.1")
-            credentials {
-                username = git_username
-                password = git_token
+        if (project.hasProperty('git_username') && project.hasProperty('git_token')) {
+            maven {
+                url = uri("https://maven.pkg.github.com/RubiiW/SecureLib-NeoForge-1.21.1")
+                credentials {
+                    username = project.property('git_username')
+                    password = project.property('git_token')
+                }
             }
         }
     }
