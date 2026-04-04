@@ -138,9 +138,6 @@ dependencies {
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    def user = project.hasProperty('git_username') ? project.property('git_username') : "unknown"
-    def token = project.hasProperty('git_token') ? project.property('git_token') : ""
-
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
@@ -150,8 +147,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_name               : mod_name,
             mod_license            : mod_license,
             mod_version            : mod_version,
-            git_username           : user,
-            git_token              : token
     ]
     inputs.properties replaceProperties
     expand replaceProperties
@@ -172,17 +167,6 @@ publishing {
             artifactId = mod_id
             groupId = mod_group_id
             version = mod_version
-        }
-    }
-    repositories {
-        if (project.hasProperty('git_username') && project.hasProperty('git_token')) {
-            maven {
-                url = uri("https://maven.pkg.github.com/RubiiW/SecureLib-NeoForge-1.21.1")
-                credentials {
-                    username = project.property('git_username')
-                    password = project.property('git_token')
-                }
-            }
         }
     }
 }
