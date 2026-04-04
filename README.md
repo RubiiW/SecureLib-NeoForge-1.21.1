@@ -46,6 +46,8 @@ public class YourModClass {
 - **Keycard (Customizable)**
 - **Operator Keycard (Admin Only Skeleton Keycard)**
 - **Card Reader**
+- **Keypad**
+- **Keypad Reader (Combination of both)**
 - **Card Writer & Printer**
 - **Reader Editor**
 
