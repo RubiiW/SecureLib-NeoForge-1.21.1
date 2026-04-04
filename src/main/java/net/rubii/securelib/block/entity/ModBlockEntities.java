@@ -17,13 +17,13 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("card_reader_be", () -> BlockEntityType.Builder.of(
                     CardReaderBlockEntity::new, SecureLibBlocksRegistry.getCardReaders()).build(null));
 
-    public static final Supplier<BlockEntityType<CardReaderBlockEntity>> KEYPAD_BE =
+    public static final Supplier<BlockEntityType<KeypadBlockEntity>> KEYPAD_BE =
             BLOCK_ENTITIES.register("keypad_be", () -> BlockEntityType.Builder.of(
-                    CardReaderBlockEntity::new, SecureLibBlocksRegistry.getKeypads()).build(null));
+                    KeypadBlockEntity::new, SecureLibBlocksRegistry.getKeypads()).build(null));
 
-    public static final Supplier<BlockEntityType<CardReaderBlockEntity>> KEYPAD_READER_BE =
+    /*public static final Supplier<BlockEntityType<KeypadReaderBlockEntity>> KEYPAD_READER_BE =
             BLOCK_ENTITIES.register("keypad_reader_be", () -> BlockEntityType.Builder.of(
-                    CardReaderBlockEntity::new, SecureLibBlocksRegistry.getKeypadReaders()).build(null));
+                    KeypadReaderBlockEntity::new, SecureLibBlocksRegistry.getKeypadReaders()).build(null));*/
 
     public static final Supplier<BlockEntityType<CardPrinterBlockEntity>> CARD_PRINTER_BE =
             BLOCK_ENTITIES.register("card_printer_be", () -> BlockEntityType.Builder.of(

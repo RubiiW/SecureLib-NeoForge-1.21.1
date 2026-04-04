@@ -37,9 +37,12 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.MAGNETIC_BAND);
                         output.accept(ModItems.DATA_CHIP);
 
+                        output.accept(ModBlocks.CARD_READER);
+                        output.accept(ModBlocks.KEYPAD);
+                        output.accept(ModBlocks.KEYPAD_READER);
+
                         output.accept(ModBlocks.CARD_PRINTER);
                         output.accept(ModBlocks.CARD_WRITER);
-                        output.accept(ModBlocks.CARD_READER);
                     })
     .build());
 
