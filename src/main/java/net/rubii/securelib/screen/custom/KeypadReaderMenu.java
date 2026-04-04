@@ -9,9 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.rubii.securelib.api.SecureLibBlocksRegistry;
-import net.rubii.securelib.block.ModBlocks;
-import net.rubii.securelib.block.entity.KeypadBlockEntity;
 import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
 import net.rubii.securelib.screen.ModMenuTypes;
 
@@ -37,6 +34,6 @@ public class KeypadReaderMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.KEYPAD_READER.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, level.getBlockState(blockEntity.getBlockPos()).getBlock());
     }
 }

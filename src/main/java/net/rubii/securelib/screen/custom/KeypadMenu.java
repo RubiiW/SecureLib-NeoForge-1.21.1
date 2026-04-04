@@ -1,7 +1,6 @@
 package net.rubii.securelib.screen.custom;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -9,12 +8,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.SlotItemHandler;
-import net.rubii.securelib.block.ModBlocks;
-import net.rubii.securelib.block.entity.CardPrinterBlockEntity;
 import net.rubii.securelib.block.entity.KeypadBlockEntity;
 import net.rubii.securelib.screen.ModMenuTypes;
-import net.rubii.securelib.util.ModTags;
 
 import java.awt.*;
 
@@ -40,6 +35,6 @@ public class KeypadMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.KEYPAD.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, level.getBlockState(blockEntity.getBlockPos()).getBlock()); //Bypasses invalidity for api support
     }
 }

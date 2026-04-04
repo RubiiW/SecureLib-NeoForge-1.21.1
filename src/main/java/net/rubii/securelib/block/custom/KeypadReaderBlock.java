@@ -2,6 +2,7 @@ package net.rubii.securelib.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -34,7 +35,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.rubii.securelib.SecureLib;
+import net.rubii.securelib.block.entity.CardReaderBlockEntity;
 import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
+import net.rubii.securelib.components.ModDataComponents;
+import net.rubii.securelib.item.ModItems;
+import net.rubii.securelib.network.CardReaderPayload;
+import net.rubii.securelib.network.KeypadReaderPayload;
+import net.rubii.securelib.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -158,7 +165,7 @@ public class KeypadReaderBlock extends BaseEntityBlock {
         if (level.isClientSide()) return 0;
 
         if (Objects.equals(blockEntity.getCode(), "")) {
-            player.displayClientMessage(Component.translatable("block.securelib.keypad.destroy_requirement"), true);
+            player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.destroy_requirement"), true);
             return 0;
         } else if (player.isCrouching()) {
             SecureLib.LOGGER.info("open");
@@ -166,7 +173,7 @@ public class KeypadReaderBlock extends BaseEntityBlock {
             blockEntity.setRemoval(true);
             return 0;
         } else {
-            player.displayClientMessage(Component.translatable("block.securelib.keypad.destroy_process"), true);
+            player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.destroy_process"), true);
             return 0;
         }
     }
@@ -188,7 +195,15 @@ public class KeypadReaderBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        return open(level, pos, player) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
+            return readerEditor(blockEntity, stack, pos, player);
+        }else if (player.getItemInHand(hand).is(ModTags.Items.KEYCARDS)){
+            return keycard(blockEntity, stack, state, level, pos, player);
+        }else{
+            return open(level, pos, player) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
     }
 
     @Override
@@ -247,5 +262,57 @@ public class KeypadReaderBlock extends BaseEntityBlock {
     public static boolean canAttach(LevelReader reader, BlockPos pos, Direction direction) {
         BlockPos blockpos = pos.relative(direction);
         return reader.getBlockState(blockpos).isFaceSturdy(reader, blockpos, direction.getOpposite());
+    }
+
+    private ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player){
+        Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
+        Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
+
+        if (keycardClearance == null || keycardFrequency == null) {
+            player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.editor_missing_data"), true);
+            return ItemInteractionResult.SUCCESS;
+        }
+
+        if (blockEntity instanceof KeypadReaderBlockEntity be){
+            if (be.getClearance() == 0 && be.getFrequency() == 0) {
+                Minecraft.getInstance().getConnection().send(
+                        new KeypadReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
+                );
+                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+                return ItemInteractionResult.SUCCESS;
+            } else {
+                player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.already_configured"), true);
+
+                return ItemInteractionResult.SUCCESS;
+            }
+        }
+
+        return ItemInteractionResult.SUCCESS;
+    }
+
+    private ItemInteractionResult keycard(BlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player){
+        Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
+        Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
+
+        if ((keycardClearance == null || keycardFrequency == null) && !stack.is(ModTags.Items.SKELETON_KEYCARDS)) {
+            player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.missing_data"), true);
+            return ItemInteractionResult.SUCCESS;
+        }
+
+        if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            if (stack.is(ModTags.Items.SKELETON_KEYCARDS)){
+                activate(level, state, player, pos);
+            } else if (be.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) && Objects.equals(be.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))) {
+                activate(level, state, player, pos);
+            } else if ((be.getClearance() == 0 && be.getFrequency() == 0) || (be.getClearance() == null && be.getFrequency() == null)) {
+                player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.missing_data"), true);
+            } else {
+                player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.data_mismatch"), true);
+
+                return ItemInteractionResult.SUCCESS;
+            }
+        }
+
+        return  ItemInteractionResult.SUCCESS;
     }
 }

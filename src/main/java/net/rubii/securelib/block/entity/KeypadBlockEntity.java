@@ -11,13 +11,9 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.rubii.securelib.block.custom.CardReaderBlock;
 import net.rubii.securelib.block.custom.KeypadBlock;
-import net.rubii.securelib.screen.custom.CardPrinterMenu;
 import net.rubii.securelib.screen.custom.KeypadMenu;
 
 import javax.annotation.Nullable;
@@ -87,12 +83,21 @@ public class KeypadBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void inputUpdated(UUID uuid) {
-        if (input.equals(code)) {
-            if (getBlockState().getBlock() instanceof KeypadBlock block){
-                if (removal){
+        if (removal){
+            if (input.equals(code)) {
+                if (getBlockState().getBlock() instanceof KeypadBlock block){
                     level.destroyBlock(getBlockPos(), true);
                     level.updateNeighbourForOutputSignal(getBlockPos(), block);
-                }else{
+                }
+            }else{
+                if (getBlockState().getBlock() instanceof KeypadBlock block){
+                    removal = false;
+                    level.updateNeighbourForOutputSignal(getBlockPos(), block);
+                }
+            }
+        }else{
+            if (input.equals(code)) {
+                if (getBlockState().getBlock() instanceof KeypadBlock block){
                     block.activate(level, getBlockState(), level.getPlayerByUUID(uuid), getBlockPos());
                 }
             }

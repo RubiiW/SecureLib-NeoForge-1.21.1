@@ -13,9 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.rubii.securelib.block.custom.KeypadBlock;
 import net.rubii.securelib.block.custom.KeypadReaderBlock;
-import net.rubii.securelib.screen.custom.KeypadMenu;
 import net.rubii.securelib.screen.custom.KeypadReaderMenu;
 
 import javax.annotation.Nullable;
@@ -30,11 +28,17 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
     private String input = "";
     private boolean removal = false;
 
+    private Integer frequency = 0; // DO NOT REMOVE THE = 0 OR THE THING EXPLODE
+    private Integer clearance = 0;
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         tag.putString("code", code);
         tag.putString("input", input);
         tag.putBoolean("removal", removal);
+
+        tag.putInt("frequency", frequency);
+        tag.putInt("clearance", clearance);
 
         super.saveAdditional(tag, registries);
     }
@@ -46,6 +50,9 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
         code = tag.getString("code");
         input = tag.getString("input");
         removal = tag.getBoolean("removal");
+
+        frequency = tag.getInt("frequency");
+        clearance = tag.getInt("clearance");
     }
 
     public String getCode() {
@@ -84,13 +91,46 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
+    public Integer getClearance() {
+        return clearance == null ? 0 : clearance;
+    }
+
+    public void setClearance(Integer clear) {
+        this.clearance = clear;
+        setChanged();
+        if (!level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public Integer getFrequency() {
+        return frequency == null ? 0 : frequency;
+    }
+
+    public void setFrequency(Integer freq) {
+        this.frequency = freq;
+        setChanged();
+        if (!level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
     public void inputUpdated(UUID uuid) {
-        if (input.equals(code)) {
-            if (getBlockState().getBlock() instanceof KeypadReaderBlock block){
-                if (removal){
+        if (removal){
+            if (input.equals(code)) {
+                if (getBlockState().getBlock() instanceof KeypadReaderBlock block){
                     level.destroyBlock(getBlockPos(), true);
                     level.updateNeighbourForOutputSignal(getBlockPos(), block);
-                }else{
+                }
+            }else{
+                if (getBlockState().getBlock() instanceof KeypadReaderBlock block){
+                    removal = false;
+                    level.updateNeighbourForOutputSignal(getBlockPos(), block);
+                }
+            }
+        }else{
+            if (input.equals(code)) {
+                if (getBlockState().getBlock() instanceof KeypadReaderBlock block){
                     block.activate(level, getBlockState(), level.getPlayerByUUID(uuid), getBlockPos());
                 }
             }

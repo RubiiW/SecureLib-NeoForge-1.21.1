@@ -225,7 +225,7 @@ public class CardReaderBlock extends BaseEntityBlock {
         }
     }
 
-    public ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player){
+    private ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player){
         Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
         Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
 
@@ -257,7 +257,7 @@ public class CardReaderBlock extends BaseEntityBlock {
         return ItemInteractionResult.SUCCESS;
     }
 
-    public ItemInteractionResult keycard(BlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player){
+    private ItemInteractionResult keycard(BlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player){
         Integer keycardClearance = stack.get(ModDataComponents.CLEARANCE.get());
         Integer keycardFrequency = stack.get(ModDataComponents.FREQUENCY.get());
 

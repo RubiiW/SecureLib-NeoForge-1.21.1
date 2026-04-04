@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "IG",
+    "DD",
+    "IB"
+  ],
+  "key": {
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "G": {
+      "tag": "c:dusts/glowstone"
+    },
+    "D": {
+      "item": "securelib:data_chip"
+    },
+    "B": {
+      "tag": "minecraft:buttons"
+    }
+  },
+  "result": {
+    "id": "securelib:keypad_reader",
+    "count": 1
+  }
+}

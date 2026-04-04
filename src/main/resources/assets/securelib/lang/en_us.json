@@ -6,6 +6,12 @@
 
   "block.securelib.keypad_reader": "Keypad Reader",
   "block.securelib.keypad_reader.code_set": "This Keypad Reader's code has been configured",
+  "block.securelib.keypad_reader.destroy_requirement": "The Keypad Reader needs to be configured in order to be removed",
+  "block.securelib.keypad_reader.destroy_process": "Crouch-Left click and enter the code to remove",
+  "block.securelib.keypad_reader.missing_data": "Use a Reader Editor to configure this block",
+  "block.securelib.keypad_reader.data_mismatch": "Frequency or Clearance does not match",
+  "block.securelib.keypad_reader.editor_missing_data": "You need to configure your Editor in a Card Writer first",
+  "block.securelib.keypad_reader.already_configured": "This Keypad Reader is already configured",
 
   "block.securelib.card_reader": "Card Reader",
   "block.securelib.card_reader.already_configured": "This Reader is already configured",

@@ -59,6 +59,21 @@ public class ModNetworking {
         );
 
         registrar.playToServer(
+                KeypadReaderPayload.TYPE,
+                KeypadReaderPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadReaderBlockEntity reader) {
+                            reader.setFrequency(payload.frequency());
+                            reader.setClearance(payload.clearance());
+                            reader.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
                 KeypadReaderPayloadCode.TYPE,
                 KeypadReaderPayloadCode.STREAM_CODEC,
                 (payload, context) -> {
