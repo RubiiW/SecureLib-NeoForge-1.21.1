@@ -197,9 +197,9 @@ public class KeypadReaderBlock extends BaseEntityBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
-        if (stack.is(ModTags.Items.KEYPAD_BYPASS)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        } else if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
+        if (stack.is(ModTags.Items.KEYPAD_BYPASS)) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+
+        if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
             return readerEditor(blockEntity, stack, pos, player);
         }else if (player.getItemInHand(hand).is(ModTags.Items.KEYCARDS)){
             return keycard(blockEntity, stack, state, level, pos, player);

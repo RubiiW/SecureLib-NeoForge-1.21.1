@@ -188,7 +188,7 @@ public class KeypadBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (stack.is(ModTags.Items.KEYPAD_BYPASS)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (stack.is(ModTags.Items.KEYPAD_BYPASS)) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         return open(level, pos, player) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
