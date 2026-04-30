@@ -225,6 +225,19 @@ public class SecureLibUtils {
         return stack.getOrDefault(ModDataComponents.FREQUENCY, 0);
     }
 
+    public static int getFrequency(BlockEntity blockEntity) {
+        int blockFrequency = 0;
+        if (blockEntity instanceof CardReaderBlockEntity be) {
+            blockFrequency = be.getFrequency();
+        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            blockFrequency = be.getFrequency();
+        }
+
+        if (hasNoFrequency(blockFrequency)) return 0;
+
+        return blockFrequency;
+    }
+
     /*
     GET/SET CLEARANCE
      */
@@ -236,6 +249,19 @@ public class SecureLibUtils {
 
     public static int getClearance(ItemStack stack) {
         return stack.getOrDefault(ModDataComponents.CLEARANCE, 0);
+    }
+
+    public static int getClearance(BlockEntity blockEntity) {
+        int blockClearance = 0;
+        if (blockEntity instanceof CardReaderBlockEntity be) {
+            blockClearance = be.getFrequency();
+        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            blockClearance = be.getFrequency();
+        }
+
+        if (hasNoFrequency(blockClearance)) return 0;
+
+        return blockClearance;
     }
 
     /*
