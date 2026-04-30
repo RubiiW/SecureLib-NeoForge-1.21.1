@@ -3,22 +3,6 @@
 # USAGE
 **If you want to use this mod as a library, here is a quick tutorial on how to implement SecureLib into your project**
 
-Inside your ```build.gradle```, edit the ```repositories``` category to include ```maven { url 'https://jitpack.io' }```. It should look like this:
-
-```
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-```
-
-Then, still in your ```build.gradle```, edit the ```dependencies``` category to include ```implementation 'com.github.RubiiW:SecureLib-NeoForge-1.21.1:VERSION'```.
-
-It should look like this. Make sure to replace ```VERSION``` with the version of the mod you want to use (for instance, the currently latest ```1.5.3```).
-```
-dependencies {
-    implementation 'com.github.RubiiW:SecureLib-NeoForge-1.21.1:VERSION'
-}
-```
 <details>
   <summary>Usage Example</summary>
   
