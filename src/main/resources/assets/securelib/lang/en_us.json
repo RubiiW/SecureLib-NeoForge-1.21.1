@@ -43,6 +43,8 @@
   "item.securelib.keycard": "Keycard",
   "item.securelib.reader_editor": "Reader Editor",
 
+  "item.securelib.keycard.missing_data": "This keycard has no data yet",
+
   "tooltip.securelib.data_receiver": "Data Receiver: Press [SHIFT] for more info",
   "tooltip.securelib.data_receiver.clearance": "Clearance:",
   "tooltip.securelib.data_receiver.color": "Color:",
