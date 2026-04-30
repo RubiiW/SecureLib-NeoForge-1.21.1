@@ -216,12 +216,12 @@ public class SecureLibUtils {
     GET/SET FREQUENCY
      */
 
-    public ItemStack setFrequency(ItemStack stack, int frequency) {
+    public static ItemStack setFrequency(ItemStack stack, int frequency) {
         stack.set(ModDataComponents.FREQUENCY, frequency);
         return stack;
     }
 
-    public int getFrequency(ItemStack stack) {
+    public static int getFrequency(ItemStack stack) {
         return stack.getOrDefault(ModDataComponents.FREQUENCY, 0);
     }
 
@@ -229,12 +229,12 @@ public class SecureLibUtils {
     GET/SET CLEARANCE
      */
 
-    public ItemStack setClearance(ItemStack stack, int clearance) {
+    public static ItemStack setClearance(ItemStack stack, int clearance) {
         stack.set(ModDataComponents.CLEARANCE, clearance);
         return stack;
     }
 
-    public int getClearance(ItemStack stack) {
+    public static int getClearance(ItemStack stack) {
         return stack.getOrDefault(ModDataComponents.CLEARANCE, 0);
     }
 
