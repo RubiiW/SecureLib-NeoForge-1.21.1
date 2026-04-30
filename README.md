@@ -1,31 +1,5 @@
 ![Banner](https://cdn.modrinth.com/data/cached_images/56dd6d544d8d34eb29b0dc2d60a575af887807bd.png)
 
-# USAGE
-**If you want to use this mod as a library, here is a quick tutorial on how to implement SecureLib into your project**
-
-<details>
-  <summary>Usage Example</summary>
-  
-  As an example, you can create your own Card Reader by registering a block of type CardReaderBlock
-
-```
-import net.rubii.securelib.block.custom.CardReaderBlock;
-```
-You will also need to register this block in your main mod class as a card reader
-
-```
-import net.rubii.securelib.api.SecureLibBlocksRegistry;
-
-@Mod(YourModClass.MODID)
-public class YourModClass {
-  public YourModClass(IEventBus modEventBus, ModContainer modContainer) {
-        SecureLibBlocksRegistry.registerCardReader(YourModBlocksClass.CUSTOM_CARD_READER);
-        //Add the remaining calls and functions below
-  }
-}
-```
-</details>
-
 ## FEATURES:
 - **Keycard (Customizable)**
 - **Operator Keycard (Admin Only Skeleton Keycard)**
