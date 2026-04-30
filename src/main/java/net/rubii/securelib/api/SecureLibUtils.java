@@ -1,11 +1,16 @@
 package net.rubii.securelib.api;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.block.entity.CardReaderBlockEntity;
 import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
 import net.rubii.securelib.components.ModDataComponents;
+import net.rubii.securelib.network.CardReaderPayload;
+import net.rubii.securelib.network.KeypadReaderPayload;
 import net.rubii.securelib.util.ModTags;
 
 import java.util.Objects;
@@ -221,6 +226,35 @@ public class SecureLibUtils {
         return stack;
     }
 
+    public static BlockEntity setFrequency(BlockEntity blockEntity, int frequency) {
+        Level level = blockEntity.getLevel();
+        BlockPos pos = blockEntity.getBlockPos();
+
+        assert level != null;
+        if (level.isClientSide()){
+            if (blockEntity instanceof CardReaderBlockEntity be) {
+                Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
+                        new CardReaderPayload(pos, frequency, be.getClearance())
+                );
+                return level.getBlockEntity(pos);
+            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+                Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
+                        new KeypadReaderPayload(pos, frequency, be.getClearance())
+                );
+                return level.getBlockEntity(pos);
+            }
+        } else {
+            if (blockEntity instanceof CardReaderBlockEntity be) {
+                be.setFrequency(frequency);
+                return level.getBlockEntity(pos);
+            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+                be.setFrequency(frequency);
+                return level.getBlockEntity(pos);
+            }
+        }
+        return null;
+    }
+
     public static int getFrequency(ItemStack stack) {
         return stack.getOrDefault(ModDataComponents.FREQUENCY, 0);
     }
@@ -245,6 +279,35 @@ public class SecureLibUtils {
     public static ItemStack setClearance(ItemStack stack, int clearance) {
         stack.set(ModDataComponents.CLEARANCE, clearance);
         return stack;
+    }
+
+    public static BlockEntity setClearance(BlockEntity blockEntity, int clearance) {
+        Level level = blockEntity.getLevel();
+        BlockPos pos = blockEntity.getBlockPos();
+
+        assert level != null;
+        if (level.isClientSide()){
+            if (blockEntity instanceof CardReaderBlockEntity be) {
+                Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
+                        new CardReaderPayload(pos, be.getFrequency(), clearance)
+                );
+                return level.getBlockEntity(pos);
+            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+                Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
+                        new KeypadReaderPayload(pos, be.getFrequency(), clearance)
+                );
+                return level.getBlockEntity(pos);
+            }
+        } else {
+            if (blockEntity instanceof CardReaderBlockEntity be) {
+                be.setClearance(clearance);
+                return level.getBlockEntity(pos);
+            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+                be.setClearance(clearance);
+                return level.getBlockEntity(pos);
+            }
+        }
+        return null;
     }
 
     public static int getClearance(ItemStack stack) {
