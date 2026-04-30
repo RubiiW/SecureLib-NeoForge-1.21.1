@@ -13,7 +13,7 @@ repositories {
 
 Then, still in your ```build.gradle```, edit the ```dependencies``` category to include ```implementation 'com.github.RubiiW:SecureLib-NeoForge-1.21.1:VERSION'```.
 
-It should look like this. Make sure to replace ```VERSION``` with the version of the mod you want to use (for instance, the currently latest ```1.4.4```).
+It should look like this. Make sure to replace ```VERSION``` with the version of the mod you want to use (for instance, the currently latest ```1.5.3```).
 ```
 dependencies {
     implementation 'com.github.RubiiW:SecureLib-NeoForge-1.21.1:VERSION'
@@ -30,12 +30,12 @@ import net.rubii.securelib.block.custom.CardReaderBlock;
 You will also need to register this block in your main mod class as a card reader
 
 ```
-import net.rubii.securelib.api.CardReaderRegistry;
+import net.rubii.securelib.api.SecureLibBlocksRegistry;
 
 @Mod(YourModClass.MODID)
 public class YourModClass {
   public YourModClass(IEventBus modEventBus, ModContainer modContainer) {
-        CardReaderRegistry.register(YourModBlocksClass.CUSTOM_CARD_READER);
+        SecureLibBlocksRegistry.registerCardReader(YourModBlocksClass.CUSTOM_CARD_READER);
         //Add the remaining calls and functions below
   }
 }
@@ -62,4 +62,4 @@ public class YourModClass {
 **Go on the [Modrinth Page](https://modrinth.com/mod/securelib) to access the mod's releases**
 
 # LISENCING
-**Project is lisenced under [CreativeCommons Atribution NonCommercial ShareAlike 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)**
+**Project is lisenced under [CreativeCommons Atribution 4.0](https://creativecommons.org/licenses/by/4.0/)**
