@@ -209,7 +209,12 @@ public class KeypadBlock extends BaseEntityBlock {
     }
 
     public void activate(Level level, BlockState state, Player player, BlockPos pos) {
-        if (!level.isClientSide() && !state.getValue(POWERED)) {
+        if (!level.isClientSide()) {
+            if (state.getValue(POWERED)){
+                power(false, state, level, pos, player);
+                return;
+            }
+
             player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {

@@ -276,7 +276,11 @@ public class CardReaderBlock extends BaseEntityBlock {
     }
 
     public void activate(Level level, BlockState state, Player player, BlockPos pos) {
-        if (!level.isClientSide() && !state.getValue(POWERED)) {
+        if (!level.isClientSide()) {
+            if (state.getValue(POWERED)){
+                power(false, state, level, pos, player);
+                return;
+            }
 
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {
