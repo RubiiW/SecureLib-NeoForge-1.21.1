@@ -20,4 +20,5 @@
 **Go on the [Modrinth Page](https://modrinth.com/mod/securelib) to access the mod's releases**
 
 # LISENCING
-**Project is lisenced under [CreativeCommons Atribution 4.0](https://creativecommons.org/licenses/by/4.0/)**
+**Project assets are licensed as All Rights Reserved**
+**Project code is lisenced under [CreativeCommons Atribution 4.0](https://creativecommons.org/licenses/by/4.0/)**
