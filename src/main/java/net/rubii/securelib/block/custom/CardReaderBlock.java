@@ -46,7 +46,6 @@ import static net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalB
 
 public class CardReaderBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    private static String tooltip;
 
     public static final MapCodec<CardReaderBlock> CODEC = simpleCodec(CardReaderBlock::new);
 

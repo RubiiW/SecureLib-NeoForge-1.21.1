@@ -12,12 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.block.entity.KeypadBlockEntity;
 import net.rubii.securelib.network.KeypadPayloadCode;
 import net.rubii.securelib.network.KeypadPayloadInput;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
     private static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "textures/gui/keypad.png");

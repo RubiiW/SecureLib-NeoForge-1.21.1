@@ -1,14 +1,13 @@
 package net.rubii.securelib.util;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.rubii.securelib.SecureLib;
+import net.rubii.securelib.api.SecureLibUtils;
 import net.rubii.securelib.block.ModBlocks;
 import net.rubii.securelib.item.ModItems;
 
@@ -20,7 +19,7 @@ public class ModCreativeModeTabs {
 
     private static ItemStack icon(){
         ItemStack ICON = new ItemStack(ModItems.KEYCARD.get());
-        ICON.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt("B7BCE8", 16), false));
+        SecureLibUtils.withColor(ICON, "B7BCE8", false);
         return ICON;
     }
 

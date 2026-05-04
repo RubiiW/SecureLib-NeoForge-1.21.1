@@ -127,8 +127,6 @@ public class KeypadBlock extends BaseEntityBlock {
         return null;
     }
 
-    // BLOCK ENTITY STUFF
-
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;

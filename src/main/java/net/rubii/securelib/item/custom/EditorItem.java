@@ -16,17 +16,6 @@ public class EditorItem extends Item {
         super(properties);
     }
 
-    /*
-    GET/SET THE CLEARANCE
-    [ITEMSTACK].get(ModDataComponents.CLEARANCE);
-    [ITEMSTACK].set(ModDataComponents.CLEARANCE, [VALUE]);
-
-    GET/SET THE COLOR
-    [ITEMSTACK].get(Datacomponents.DYED_COLOR);
-    [ITEMSTACK].set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt("[VALUE]", 16), false));
-     */
-
-
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
         if (Screen.hasShiftDown()) {

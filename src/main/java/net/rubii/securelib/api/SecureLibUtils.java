@@ -2,7 +2,9 @@ package net.rubii.securelib.api;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.rubii.securelib.SecureLib;
@@ -164,8 +166,6 @@ public class SecureLibUtils {
      */
 
     public static boolean canInteract(int blockFrequency, int blockClearance, int itemFrequency, int itemClearance) {
-        SecureLib.LOGGER.debug(itemFrequency + " " + itemClearance);
-
         return matchFrequency(blockFrequency, itemFrequency) && hasRequiredClearance(blockClearance, itemClearance);
     }
 
@@ -201,8 +201,6 @@ public class SecureLibUtils {
 
         int itemFrequency = stack.getOrDefault(ModDataComponents.FREQUENCY, 0);
         int itemClearance = stack.getOrDefault(ModDataComponents.CLEARANCE, 0);
-
-        SecureLib.LOGGER.debug(itemFrequency + " " + itemClearance);
 
         if (blockEntity instanceof CardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
@@ -325,6 +323,43 @@ public class SecureLibUtils {
         if (hasNoFrequency(blockClearance)) return 0;
 
         return blockClearance;
+    }
+
+    /*
+    WITH COLOR
+     */
+
+    public static ItemStack withColor(ItemStack stack, String rgb, boolean showInTooltip) {
+        if (stack.is(ModTags.Items.KEYCARDS)) {
+            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
+        }else{
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+        }
+
+        return stack;
+    }
+
+    public static ItemStack withColor(ItemStack stack, Integer rgb, boolean showInTooltip) {
+        if (stack.is(ModTags.Items.KEYCARDS)) {
+            String str = rgb.toString().split("x")[1];
+            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+        }else{
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+        }
+
+        return stack;
+    }
+
+    public static ItemStack withColor(ItemStack stack, Integer r, Integer g, Integer b, boolean showInTooltip) {
+        if (stack.is(ModTags.Items.KEYCARDS)) {
+            String rgb = r.toString() + b.toString() + g.toString();
+            String str = rgb.split("x")[1];
+            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+        }else{
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+        }
+
+        return stack;
     }
 
     /*

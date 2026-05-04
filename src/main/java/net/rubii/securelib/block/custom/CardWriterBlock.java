@@ -71,10 +71,6 @@ public class CardWriterBlock extends BaseEntityBlock {
         builder.add(CRAFTING);
     }
 
-    /*
-    BLOCK ENTITY STUFF
-     */
-
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
