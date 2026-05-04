@@ -5,6 +5,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -46,13 +48,18 @@ import static net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalB
 public class KeypadBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-    public static final MapCodec<KeypadBlock> CODEC = simpleCodec(KeypadBlock::new);
-
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public KeypadBlock(Properties properties) {
+    public static SoundEvent enableSound;
+    public static SoundEvent disableSound;
+
+    public KeypadBlock(BlockBehaviour.Properties properties, SoundEvent enableSound, SoundEvent disableSound) {
         super(properties);
+        this.enableSound = enableSound;
+        this.disableSound = disableSound;
     }
+
+    public static final MapCodec<KeypadBlock> CODEC = simpleCodec(properties -> new KeypadBlock(properties, enableSound, disableSound));
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {

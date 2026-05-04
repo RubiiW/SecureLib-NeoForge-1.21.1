@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -40,20 +41,24 @@ import net.rubii.securelib.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 import static net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock.FACE;
 
 public class CardReaderBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-    public static final MapCodec<CardReaderBlock> CODEC = simpleCodec(CardReaderBlock::new);
+    public static SoundEvent enableSound;
+    public static SoundEvent disableSound;
+
+    public CardReaderBlock(BlockBehaviour.Properties properties, SoundEvent enableSound, SoundEvent disableSound) {
+        super(properties);
+        this.enableSound = enableSound;
+        this.disableSound = disableSound;
+    }
+
+    public static final MapCodec<KeypadReaderBlock> CODEC = simpleCodec(properties -> new KeypadReaderBlock(properties, enableSound, disableSound));
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-
-    public CardReaderBlock(BlockBehaviour.Properties properties) {
-        super(properties);
-    }
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
@@ -160,17 +165,14 @@ public class CardReaderBlock extends BaseEntityBlock {
         if (level.isClientSide()) return 0;
 
         if(stack.is(ModItems.READER_EDITOR)){
-            if (
-            blockEntity.getClearance() <= stack.get(ModDataComponents.CLEARANCE.get()) &&
-            Objects.equals(blockEntity.getFrequency(), stack.get(ModDataComponents.FREQUENCY.get()))
-            ){
+            if (SecureLibUtils.hasNoData(stack)){
                 level.destroyBlock(pos, true);
                 level.updateNeighbourForOutputSignal(pos, this);
             } else {
                 player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
             }
             return 0;
-        } else if (blockEntity.getClearance() == 0 && blockEntity.getFrequency() == 0) {
+        } else if (SecureLibUtils.hasNoData(blockEntity)) {
             player.displayClientMessage(Component.translatable("block.securelib.card_reader.destroy_requirement"), true);
             return 0;
         } else {
@@ -295,7 +297,7 @@ public class CardReaderBlock extends BaseEntityBlock {
         level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
 
         if (player == null) return;
-        player.playNotifySound(value ? SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON : SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+        player.playNotifySound(value ? enableSound : disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
     private Direction getConnectedDirection(BlockState state) {

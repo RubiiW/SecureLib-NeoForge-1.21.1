@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -51,12 +52,17 @@ import static net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalB
 public class KeypadReaderBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-    public static final MapCodec<KeypadReaderBlock> CODEC = simpleCodec(KeypadReaderBlock::new);
+    public static SoundEvent enableSound;
+    public static SoundEvent disableSound;
+
+    public static final MapCodec<KeypadReaderBlock> CODEC = simpleCodec(properties -> new KeypadReaderBlock(properties, enableSound, disableSound));
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public KeypadReaderBlock(Properties properties) {
+    public KeypadReaderBlock(Properties properties, SoundEvent enableSound, SoundEvent disableSound) {
         super(properties);
+        this.enableSound = enableSound;
+        this.disableSound = disableSound;
     }
 
     @Override
@@ -245,7 +251,7 @@ public class KeypadReaderBlock extends BaseEntityBlock {
             level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
 
             if (player == null) return;
-            player.playNotifySound(value ? SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON : SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+            player.playNotifySound(value ? enableSound : disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
     }
 

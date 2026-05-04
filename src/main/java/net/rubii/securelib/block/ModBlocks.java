@@ -1,5 +1,6 @@
 package net.rubii.securelib.block;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -19,17 +20,20 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> CARD_READER = registerBlock("card_reader", () ->
             new CardReaderBlock(BlockBehaviour.Properties.of()
-            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
+            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion(),
+                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF
     ));
 
     public static final DeferredBlock<Block> KEYPAD = registerBlock("keypad", () ->
             new KeypadBlock(BlockBehaviour.Properties.of()
-            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
+            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion(),
+                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF
     ));
 
     public static final DeferredBlock<Block> KEYPAD_READER = registerBlock("keypad_reader", () ->
             new KeypadReaderBlock(BlockBehaviour.Properties.of()
-            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
+            .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion(),
+                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF
     ));
 
     public static final DeferredBlock<Block> CARD_PRINTER = registerBlock("card_printer", () ->
