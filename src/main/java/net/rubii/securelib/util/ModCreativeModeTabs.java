@@ -19,7 +19,7 @@ public class ModCreativeModeTabs {
 
     private static ItemStack icon(){
         ItemStack ICON = new ItemStack(ModItems.KEYCARD.get());
-        SecureLibUtils.withColor(ICON, "B7BCE8", false);
+        SecureLibUtils.keycard(ICON, Component.empty(), "B7BCE8",false);
         return ICON;
     }
 

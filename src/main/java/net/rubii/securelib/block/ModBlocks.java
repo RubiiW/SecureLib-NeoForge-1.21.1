@@ -21,7 +21,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CARD_READER = registerBlock("card_reader", () ->
             new CardReaderBlock(BlockBehaviour.Properties.of()
             .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion(),
-                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF
+                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, true
     ));
 
     public static final DeferredBlock<Block> KEYPAD = registerBlock("keypad", () ->
@@ -33,7 +33,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> KEYPAD_READER = registerBlock("keypad_reader", () ->
             new KeypadReaderBlock(BlockBehaviour.Properties.of()
             .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion(),
-                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF
+                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, true
     ));
 
     public static final DeferredBlock<Block> CARD_PRINTER = registerBlock("card_printer", () ->

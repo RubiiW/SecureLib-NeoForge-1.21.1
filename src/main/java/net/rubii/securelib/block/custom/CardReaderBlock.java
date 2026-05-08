@@ -49,14 +49,18 @@ public class CardReaderBlock extends BaseEntityBlock {
 
     public static SoundEvent enableSound;
     public static SoundEvent disableSound;
+    public static SoundEvent failSound;
+    public static boolean informative;
 
-    public CardReaderBlock(BlockBehaviour.Properties properties, SoundEvent enableSound, SoundEvent disableSound) {
+    public CardReaderBlock(BlockBehaviour.Properties properties, SoundEvent enableSound, SoundEvent disableSound, SoundEvent failSound, boolean informative) {
         super(properties);
         this.enableSound = enableSound;
         this.disableSound = disableSound;
+        this.failSound = failSound;
+        this.informative = informative;
     }
 
-    public static final MapCodec<KeypadReaderBlock> CODEC = simpleCodec(properties -> new KeypadReaderBlock(properties, enableSound, disableSound));
+    public static final MapCodec<KeypadReaderBlock> CODEC = simpleCodec(properties -> new KeypadReaderBlock(properties, enableSound, disableSound, failSound, informative));
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
@@ -169,7 +173,7 @@ public class CardReaderBlock extends BaseEntityBlock {
                 level.destroyBlock(pos, true);
                 level.updateNeighbourForOutputSignal(pos, this);
             } else {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
+                player.displayClientMessage(Component.translatable("item.securelib.reader_editor.missing_data"), true);
             }
             return 0;
         } else if (SecureLibUtils.hasNoData(blockEntity)) {
@@ -202,7 +206,7 @@ public class CardReaderBlock extends BaseEntityBlock {
             CardReaderBlockEntity blockEntity = (CardReaderBlockEntity) level.getBlockEntity(pos);
 
             if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
-                return readerEditor(blockEntity, stack, pos, player);
+                return readerEditor(blockEntity, stack, pos, player, level);
             }else if (player.getItemInHand(hand).is(ModTags.Items.KEYCARDS)){
                 return keycard(blockEntity, stack, state, level, pos, player);
             }else {
@@ -224,31 +228,34 @@ public class CardReaderBlock extends BaseEntityBlock {
         }
     }
 
-    private ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player){
-
-        if (SecureLibUtils.hasNoData(stack)) {
-            player.displayClientMessage(Component.translatable("block.securelib.card_reader.editor_missing_data"), true);
-            return ItemInteractionResult.SUCCESS;
-        }
+    private ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player, Level level) {
+        if (level.isClientSide()) return ItemInteractionResult.SUCCESS;
 
         if (blockEntity instanceof CardReaderBlockEntity be){
-            if (SecureLibUtils.canInteract(be, stack)) {
-
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.removal"), true);
-                return ItemInteractionResult.SUCCESS;
-
-            } else if (SecureLibUtils.hasNoData(blockEntity)) {
-
-                Minecraft.getInstance().getConnection().send(
-                        new CardReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
-                );
-                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-                return ItemInteractionResult.SUCCESS;
-
-            } else {
+            if (!SecureLibUtils.hasNoData(be)){
                 player.displayClientMessage(Component.translatable("block.securelib.card_reader.already_configured"), true);
-
                 return ItemInteractionResult.SUCCESS;
+            }
+
+            switch (SecureLibUtils.canInteract(be, stack)){
+                case SUCCESS: {
+                    player.displayClientMessage(Component.translatable("block.securelib.card_reader.removal"), true);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case BLOCK_NO_DATA: {
+                    Minecraft.getInstance().getConnection().send(
+                            new CardReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
+                    );
+                    player.playNotifySound(enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case ITEM_NO_DATA, BOTH_NO_DATA: {
+                    player.displayClientMessage(
+                            Component.translatable("item.securelib.reader_editor.missing_data"),
+                            true
+                    );
+                    return  ItemInteractionResult.SUCCESS;
+                }
             }
         }
 
@@ -256,24 +263,63 @@ public class CardReaderBlock extends BaseEntityBlock {
     }
 
     private ItemInteractionResult keycard(BlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player){
-
-        if (SecureLibUtils.hasNoData(stack) && !SecureLibUtils.isSkeleton(stack)) {
-            player.displayClientMessage(Component.translatable("item.securelib.keycard.missing_data"), true);
-            return ItemInteractionResult.SUCCESS;
-        }
+        if (level.isClientSide()) return ItemInteractionResult.SUCCESS;
 
         if (blockEntity instanceof CardReaderBlockEntity be) {
-            if (SecureLibUtils.canInteract(be, stack) || SecureLibUtils.isSkeleton(stack)) {
+            if (SecureLibUtils.isSkeleton(stack)) {
                 activate(level, state, player, pos);
-            } else if (SecureLibUtils.hasNoData(blockEntity)) {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
-            } else {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.data_mismatch"), true);
                 return ItemInteractionResult.SUCCESS;
+            }
+
+            SecureLib.LOGGER.debug(SecureLibUtils.canInteract(be, stack).toString());
+
+            switch (SecureLibUtils.canInteract(be, stack)) {
+                case SUCCESS: {
+                    activate(level, state, player, pos);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case CLEARANCE_FAIL: {
+                    clearanceFailMessage(player, be.getClearance());
+                    level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case FREQUENCY_FAIL, COMPLETE_FAIL: {
+                    frequencyFailMessage(player, be.getFrequency());
+                    level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case BLOCK_NO_DATA, BOTH_NO_DATA: {
+                    player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case ITEM_NO_DATA: {
+                    player.displayClientMessage(Component.translatable("item.securelib.keycard.missing_data"), true);
+                    return  ItemInteractionResult.SUCCESS;
+                }
             }
         }
 
         return  ItemInteractionResult.SUCCESS;
+    }
+
+    private void clearanceFailMessage(Player player, int value){
+        player.displayClientMessage(
+                informative ? Component.literal(
+                        Component.translatable("item.securelib.data_reciever.mismatch_clearance_informative").getString()
+                        + value)
+                        : Component.translatable("item.securelib.data_reciever.mismatch_clearance"),
+                true
+        );
+    }
+
+    private void frequencyFailMessage(Player player, int value){
+        player.displayClientMessage(
+                informative ? Component.literal(
+                        Component.translatable("item.securelib.data_reciever.mismatch_frequency_informative").getString()
+                        + value)
+                        : Component.translatable("item.securelib.data_reciever.mismatch_frequency"),
+                true
+        );
     }
 
     public void activate(Level level, BlockState state, Player player, BlockPos pos) {
@@ -283,9 +329,11 @@ public class CardReaderBlock extends BaseEntityBlock {
                 return;
             }
 
+            level.playSound(null, pos, enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {
                 power(false, state, level, pos, player);
+                level.playSound(null, pos, disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             });
         }
     }
@@ -295,9 +343,6 @@ public class CardReaderBlock extends BaseEntityBlock {
         level.updateNeighborsAt(pos, this);
         level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
         level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
-
-        if (player == null) return;
-        player.playNotifySound(value ? enableSound : disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
     private Direction getConnectedDirection(BlockState state) {

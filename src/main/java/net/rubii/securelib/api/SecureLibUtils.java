@@ -3,14 +3,17 @@ package net.rubii.securelib.api;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.rubii.securelib.SecureLib;
+import net.rubii.securelib.api.enums.CardInteractionResult;
 import net.rubii.securelib.block.entity.CardReaderBlockEntity;
 import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
 import net.rubii.securelib.components.ModDataComponents;
+import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.network.CardReaderPayload;
 import net.rubii.securelib.network.KeypadReaderPayload;
 import net.rubii.securelib.util.ModTags;
@@ -165,11 +168,21 @@ public class SecureLibUtils {
     CAN INTERACT
      */
 
-    public static boolean canInteract(int blockFrequency, int blockClearance, int itemFrequency, int itemClearance) {
-        return matchFrequency(blockFrequency, itemFrequency) && hasRequiredClearance(blockClearance, itemClearance);
+    public static CardInteractionResult canInteract(int blockFrequency, int blockClearance, int itemFrequency, int itemClearance) {
+        if (hasNoData(blockFrequency, blockClearance)) return CardInteractionResult.BLOCK_NO_DATA;
+        if (hasNoData(itemFrequency, itemClearance)) return CardInteractionResult.ITEM_NO_DATA;
+        if (hasNoData(blockFrequency, blockClearance) && hasNoData(itemFrequency, itemClearance)) return CardInteractionResult.BOTH_NO_DATA;
+
+        if (matchFrequency(blockFrequency, itemFrequency) &&
+                hasRequiredClearance(blockClearance, itemClearance)) return CardInteractionResult.SUCCESS;
+        else if (matchFrequency(blockFrequency, itemFrequency) &&
+                !hasRequiredClearance(blockClearance, itemClearance)) return CardInteractionResult.CLEARANCE_FAIL;
+        else if (!matchFrequency(blockFrequency, itemFrequency) &&
+                hasRequiredClearance(blockClearance, itemClearance)) return CardInteractionResult.FREQUENCY_FAIL;
+        else return CardInteractionResult.COMPLETE_FAIL;
     }
 
-    public static boolean canInteract(BlockEntity blockEntity, int itemFrequency, int itemClearance) {
+    public static CardInteractionResult canInteract(BlockEntity blockEntity, int itemFrequency, int itemClearance) {
         int blockFrequency = 0;
         int blockClearance = 0;
 
@@ -181,21 +194,21 @@ public class SecureLibUtils {
             blockClearance = be.getClearance();
         }
 
-        if (hasNoData(blockEntity)) return false;
+        if (hasNoData(blockEntity)) return CardInteractionResult.BLOCK_NO_DATA;
 
         return canInteract(blockFrequency, blockClearance, itemClearance, itemFrequency);
     }
 
-    public static boolean canInteract(int blockFrequency, int blockClearance, ItemStack stack) {
+    public static CardInteractionResult canInteract(int blockFrequency, int blockClearance, ItemStack stack) {
         int itemFrequency = stack.getOrDefault(ModDataComponents.FREQUENCY, 0);
         int itemClearance = stack.getOrDefault(ModDataComponents.CLEARANCE, 0);
 
-        if (hasNoData(stack)) return false;
+        if (hasNoData(stack)) return CardInteractionResult.ITEM_NO_DATA;
 
         return canInteract(blockFrequency, blockClearance, itemFrequency, itemClearance);
     }
 
-    public static boolean canInteract(BlockEntity blockEntity, ItemStack stack) {
+    public static CardInteractionResult canInteract(BlockEntity blockEntity, ItemStack stack) {
         int blockFrequency = 0;
         int blockClearance = 0;
 
@@ -210,7 +223,9 @@ public class SecureLibUtils {
             blockClearance = be.getClearance();
         }
 
-        if (hasNoData(blockEntity) || hasNoData(stack)) return false;
+        if (hasNoData(blockEntity)) return CardInteractionResult.BLOCK_NO_DATA;
+        if (hasNoData(stack)) return CardInteractionResult.ITEM_NO_DATA;
+        if (hasNoData(blockEntity) && hasNoData(stack)) return CardInteractionResult.BOTH_NO_DATA;
 
         return canInteract(blockFrequency, blockClearance, itemFrequency, itemClearance);
     }
@@ -329,9 +344,10 @@ public class SecureLibUtils {
     WITH COLOR
      */
 
-    public static ItemStack withColor(ItemStack stack, String rgb, boolean showInTooltip) {
+    public static ItemStack keycard(ItemStack stack, Component name, String rgb, boolean showInTooltip) {
         if (stack.is(ModTags.Items.KEYCARDS)) {
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
+            stack.set(DataComponents.ITEM_NAME, name);
         }else{
             SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
         }
@@ -339,10 +355,11 @@ public class SecureLibUtils {
         return stack;
     }
 
-    public static ItemStack withColor(ItemStack stack, Integer rgb, boolean showInTooltip) {
+    public static ItemStack keycard(ItemStack stack, Component name, Integer rgb, boolean showInTooltip) {
         if (stack.is(ModTags.Items.KEYCARDS)) {
             String str = rgb.toString().split("x")[1];
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+            stack.set(DataComponents.ITEM_NAME, name);
         }else{
             SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
         }
@@ -350,11 +367,54 @@ public class SecureLibUtils {
         return stack;
     }
 
-    public static ItemStack withColor(ItemStack stack, Integer r, Integer g, Integer b, boolean showInTooltip) {
+    public static ItemStack keycard(ItemStack stack, Component name, Integer r, Integer g, Integer b, boolean showInTooltip) {
         if (stack.is(ModTags.Items.KEYCARDS)) {
             String rgb = r.toString() + b.toString() + g.toString();
             String str = rgb.split("x")[1];
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+            stack.set(DataComponents.ITEM_NAME, name);
+        }else{
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+        }
+
+        return stack;
+    }
+
+    public static ItemStack keycard(Component name, String rgb, boolean showInTooltip) {
+        ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
+
+        if (stack.is(ModTags.Items.KEYCARDS)) {
+            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
+            stack.set(DataComponents.ITEM_NAME, name);
+        }else{
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+        }
+
+        return stack;
+    }
+
+    public static ItemStack keycard(Component name, Integer rgb, boolean showInTooltip) {
+        ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
+
+        if (stack.is(ModTags.Items.KEYCARDS)) {
+            String str = rgb.toString().split("x")[1];
+            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+            stack.set(DataComponents.ITEM_NAME, name);
+        }else{
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+        }
+
+        return stack;
+    }
+
+    public static ItemStack keycard(Component name, Integer r, Integer g, Integer b, boolean showInTooltip) {
+        ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
+
+        if (stack.is(ModTags.Items.KEYCARDS)) {
+            String rgb = r.toString() + b.toString() + g.toString();
+            String str = rgb.split("x")[1];
+            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+            stack.set(DataComponents.ITEM_NAME, name);
         }else{
             SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
         }

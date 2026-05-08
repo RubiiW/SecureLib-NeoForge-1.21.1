@@ -166,7 +166,6 @@ public class KeypadBlock extends BaseEntityBlock {
             player.displayClientMessage(Component.translatable("block.securelib.keypad.destroy_requirement"), true);
             return 0;
         } else if (player.isCrouching()) {
-            SecureLib.LOGGER.info("open");
             open(level, pos, player);
             blockEntity.setRemoval(true);
             return 0;
@@ -220,11 +219,11 @@ public class KeypadBlock extends BaseEntityBlock {
                 return;
             }
 
-            player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+            player.playNotifySound(enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {
                 power(false, state, level, pos, player);
-                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+                player.playNotifySound(disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             });
         }
     }

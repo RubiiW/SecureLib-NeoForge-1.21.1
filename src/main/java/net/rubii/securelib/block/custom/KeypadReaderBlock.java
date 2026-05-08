@@ -37,9 +37,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.api.SecureLibUtils;
+import net.rubii.securelib.block.entity.CardReaderBlockEntity;
 import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
 import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.item.ModItems;
+import net.rubii.securelib.network.CardReaderPayload;
 import net.rubii.securelib.network.KeypadReaderPayload;
 import net.rubii.securelib.util.ModTags;
 import org.jetbrains.annotations.Nullable;
@@ -54,15 +56,19 @@ public class KeypadReaderBlock extends BaseEntityBlock {
 
     public static SoundEvent enableSound;
     public static SoundEvent disableSound;
+    public static SoundEvent failSound;
+    public static boolean informative;
 
-    public static final MapCodec<KeypadReaderBlock> CODEC = simpleCodec(properties -> new KeypadReaderBlock(properties, enableSound, disableSound));
+    public static final MapCodec<KeypadReaderBlock> CODEC = simpleCodec(properties -> new KeypadReaderBlock(properties, enableSound, disableSound, failSound, informative));
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public KeypadReaderBlock(Properties properties, SoundEvent enableSound, SoundEvent disableSound) {
+    public KeypadReaderBlock(Properties properties, SoundEvent enableSound, SoundEvent disableSound, SoundEvent failSound, boolean informative) {
         super(properties);
         this.enableSound = enableSound;
         this.disableSound = disableSound;
+        this.failSound = failSound;
+        this.informative = informative;
     }
 
     @Override
@@ -203,7 +209,7 @@ public class KeypadReaderBlock extends BaseEntityBlock {
         if (stack.is(ModTags.Items.KEYPAD_BYPASS)) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 
         if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
-            return readerEditor(blockEntity, stack, pos, player);
+            return readerEditor(blockEntity, stack, pos, player, level);
         }else if (player.getItemInHand(hand).is(ModTags.Items.KEYCARDS)){
             return keycard(blockEntity, stack, state, level, pos, player);
         }else{
@@ -233,12 +239,12 @@ public class KeypadReaderBlock extends BaseEntityBlock {
                 power(false, state, level, pos, player);
                 return;
             }
-            
-            player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+            level.playSound(null, pos, enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {
                 power(false, state, level, pos, player);
-                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(null, pos, disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             });
         }
     }
@@ -249,9 +255,6 @@ public class KeypadReaderBlock extends BaseEntityBlock {
             level.updateNeighborsAt(pos, this);
             level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
             level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
-
-            if (player == null) return;
-            player.playNotifySound(value ? enableSound : disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
     }
 
@@ -274,25 +277,38 @@ public class KeypadReaderBlock extends BaseEntityBlock {
         return reader.getBlockState(blockpos).isFaceSturdy(reader, blockpos, direction.getOpposite());
     }
 
-    private ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player){
-        if (SecureLibUtils.hasNoData(stack)) {
-            player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.editor_missing_data"), true);
-            return ItemInteractionResult.SUCCESS;
-        }
+    private ItemInteractionResult readerEditor(BlockEntity blockEntity, ItemStack stack, BlockPos pos, Player player, Level level){
+        if (level.isClientSide()) return ItemInteractionResult.SUCCESS;
 
         if (blockEntity instanceof KeypadReaderBlockEntity be){
-            if (SecureLibUtils.hasNoData(be)) {
-
-                Minecraft.getInstance().getConnection().send(
-                        new KeypadReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
-                );
-                player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-                return ItemInteractionResult.SUCCESS;
-
-            } else {
+            if (!SecureLibUtils.hasNoData(be)){
                 player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.already_configured"), true);
-
                 return ItemInteractionResult.SUCCESS;
+            }
+
+            switch (SecureLibUtils.canInteract(be, stack)){
+                case BLOCK_NO_DATA: {
+                    Minecraft.getInstance().getConnection().send(
+                            new KeypadReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
+                    );
+                    player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case ITEM_NO_DATA, BOTH_NO_DATA: {
+                    player.displayClientMessage(
+                            Component.translatable("item.securelib.reader_editor.missing_data"),
+                            true
+                    );
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case CLEARANCE_FAIL: {
+                    clearanceFailMessage(player, be.getClearance());
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case FREQUENCY_FAIL, COMPLETE_FAIL: {
+                    frequencyFailMessage(player, be.getFrequency());
+                    return  ItemInteractionResult.SUCCESS;
+                }
             }
         }
 
@@ -300,23 +316,60 @@ public class KeypadReaderBlock extends BaseEntityBlock {
     }
 
     private ItemInteractionResult keycard(BlockEntity blockEntity, ItemStack stack, BlockState state, Level level, BlockPos pos, Player player){
-
-        if (SecureLibUtils.hasNoData(stack) && !SecureLibUtils.isSkeleton(stack)) {
-            player.displayClientMessage(Component.translatable("item.securelib.keycard.missing_data"), true);
-            return ItemInteractionResult.SUCCESS;
-        }
+        if (level.isClientSide()) return ItemInteractionResult.SUCCESS;
 
         if (blockEntity instanceof KeypadReaderBlockEntity be) {
-            if (SecureLibUtils.canInteract(be, stack) || SecureLibUtils.isSkeleton(stack)) {
+            if (SecureLibUtils.isSkeleton(stack)) {
                 activate(level, state, player, pos);
-            } else if (SecureLibUtils.hasNoData(be)) {
-                player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.missing_data"), true);
-            } else {
-                player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.data_mismatch"), true);
                 return ItemInteractionResult.SUCCESS;
+            }
+
+            switch (SecureLibUtils.canInteract(be, stack)) {
+                case SUCCESS: {
+                    activate(level, state, player, pos);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case CLEARANCE_FAIL: {
+                    clearanceFailMessage(player, be.getClearance());
+                    level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case FREQUENCY_FAIL, COMPLETE_FAIL: {
+                    frequencyFailMessage(player, be.getFrequency());
+                    level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case BLOCK_NO_DATA, BOTH_NO_DATA: {
+                    player.displayClientMessage(Component.translatable("block.securelib.keypad_reader.missing_data"), true);
+                    return  ItemInteractionResult.SUCCESS;
+                }
+                case ITEM_NO_DATA: {
+                    player.displayClientMessage(Component.translatable("item.securelib.keycard.missing_data"), true);
+                    return  ItemInteractionResult.SUCCESS;
+                }
             }
         }
 
-        return  ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
+    }
+
+    private void clearanceFailMessage(Player player, int value){
+        player.displayClientMessage(
+                informative ? Component.literal(
+                        Component.translatable("item.securelib.data_reciever.mismatch_clearance_informative").getString()
+                        + value)
+                        : Component.translatable("item.securelib.data_reciever.mismatch_clearance"),
+                true
+        );
+    }
+
+    private void frequencyFailMessage(Player player, int value){
+        player.displayClientMessage(
+                informative ? Component.literal(
+                        Component.translatable("item.securelib.data_reciever.mismatch_frequency_informative").getString()
+                        + value)
+                        : Component.translatable("item.securelib.data_reciever.mismatch_frequency"),
+                true
+        );
     }
 }
