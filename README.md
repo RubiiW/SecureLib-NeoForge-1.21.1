@@ -23,3 +23,5 @@
 **Project assets are licensed as All Rights Reserved**
 
 **Project code is lisenced under [CreativeCommons Atribution 4.0](https://creativecommons.org/licenses/by/4.0/)**
+
+**AI Training is forbidden**
