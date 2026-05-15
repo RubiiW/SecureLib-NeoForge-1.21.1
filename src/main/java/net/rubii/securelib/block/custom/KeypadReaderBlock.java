@@ -240,11 +240,11 @@ public class KeypadReaderBlock extends BaseEntityBlock {
                 return;
             }
 
-            level.playSound(null, pos, enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.playSound(player, pos, enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {
                 power(false, state, level, pos, player);
-                level.playSound(null, pos, disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(player, pos, disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             });
         }
     }
@@ -291,7 +291,7 @@ public class KeypadReaderBlock extends BaseEntityBlock {
                     Minecraft.getInstance().getConnection().send(
                             new KeypadReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
                     );
-                    player.playNotifySound(SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound(player, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case ITEM_NO_DATA, BOTH_NO_DATA: {
@@ -299,6 +299,7 @@ public class KeypadReaderBlock extends BaseEntityBlock {
                             Component.translatable("item.securelib.reader_editor.missing_data"),
                             true
                     );
+                    level.playSound(player, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case CLEARANCE_FAIL: {
@@ -331,12 +332,12 @@ public class KeypadReaderBlock extends BaseEntityBlock {
                 }
                 case CLEARANCE_FAIL: {
                     clearanceFailMessage(player, be.getClearance());
-                    level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound(player, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case FREQUENCY_FAIL, COMPLETE_FAIL: {
                     frequencyFailMessage(player, be.getFrequency());
-                    level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.playSound(player, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case BLOCK_NO_DATA, BOTH_NO_DATA: {

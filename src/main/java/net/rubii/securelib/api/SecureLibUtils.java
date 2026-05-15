@@ -383,12 +383,8 @@ public class SecureLibUtils {
     public static ItemStack keycard(Component name, String rgb, boolean showInTooltip) {
         ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
 
-        if (stack.is(ModTags.Items.KEYCARDS)) {
-            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
-            stack.set(DataComponents.ITEM_NAME, name);
-        }else{
-            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
-        }
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
+        stack.set(DataComponents.ITEM_NAME, name);
 
         return stack;
     }
@@ -396,13 +392,9 @@ public class SecureLibUtils {
     public static ItemStack keycard(Component name, Integer rgb, boolean showInTooltip) {
         ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
 
-        if (stack.is(ModTags.Items.KEYCARDS)) {
-            String str = rgb.toString().split("x")[1];
-            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
-            stack.set(DataComponents.ITEM_NAME, name);
-        }else{
-            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
-        }
+        String str = rgb.toString().split("x")[1];
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+        stack.set(DataComponents.ITEM_NAME, name);
 
         return stack;
     }
@@ -410,14 +402,10 @@ public class SecureLibUtils {
     public static ItemStack keycard(Component name, Integer r, Integer g, Integer b, boolean showInTooltip) {
         ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
 
-        if (stack.is(ModTags.Items.KEYCARDS)) {
-            String rgb = r.toString() + b.toString() + g.toString();
-            String str = rgb.split("x")[1];
-            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
-            stack.set(DataComponents.ITEM_NAME, name);
-        }else{
-            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
-        }
+        String rgb = r.toString() + b.toString() + g.toString();
+        String str = rgb.split("x")[1];
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+        stack.set(DataComponents.ITEM_NAME, name);
 
         return stack;
     }
