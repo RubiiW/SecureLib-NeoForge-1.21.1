@@ -10,10 +10,13 @@
     },
     {
       "item": "securelib:data_chip"
+    },
+    {
+      "item": "securelib:data_chip"
     }
   ],
   "result": {
-    "id": "securelib:reader_editor",
+    "id": "securelib:trireader_editor",
     "count": 1
   }
 }

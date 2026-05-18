@@ -29,9 +29,11 @@ public class ModCreativeModeTabs {
                     .title(Component.literal("SecureLib"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.KEYCARD);
+                        output.accept(ModItems.TRICARD);
                         output.accept(ModItems.OPERATOR_KEYCARD);
                         output.accept(ModItems.BLANK_CARD);
 
+                        output.accept(ModItems.TRIREADER_EDITOR);
                         output.accept(ModItems.READER_EDITOR);
                         output.accept(ModItems.MAGNETIC_BAND);
                         output.accept(ModItems.DATA_CHIP);
@@ -42,6 +44,7 @@ public class ModCreativeModeTabs {
 
                         output.accept(ModBlocks.CARD_PRINTER);
                         output.accept(ModBlocks.CARD_WRITER);
+                        output.accept(ModBlocks.CARD_WRITER_ALT);
                     })
     .build());
 

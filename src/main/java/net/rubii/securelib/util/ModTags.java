@@ -22,7 +22,10 @@ public class ModTags {
     public static class Items {
         public static final TagKey<Item> SKELETON_KEYCARDS = createTag("skeleton_keycards");
         public static final TagKey<Item> KEYCARDS = createTag("keycards");
-        public static final TagKey<Item> DATA_RECEIVER = createTag("data_receiver");
+        public static final TagKey<Item> TRICARDS = createTag("tricards");
+        public static final TagKey<Item> CARDS = createTag("cards");
+        public static final TagKey<Item> DATA_RECEIVERS = createTag("data_receivers");
+        public static final TagKey<Item> TRIDATA_RECEIVERS = createTag("tridata_receivers");
         public static final TagKey<Item> KEYPAD_BYPASS = createTag("keypad_bypass");
 
         private static TagKey<Item> createTag(String name) {

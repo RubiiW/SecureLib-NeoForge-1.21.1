@@ -50,8 +50,8 @@ public class KeypadBlock extends BaseEntityBlock {
 
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-    public static SoundEvent enableSound;
-    public static SoundEvent disableSound;
+    public SoundEvent enableSound;
+    public SoundEvent disableSound;
 
     public KeypadBlock(BlockBehaviour.Properties properties, SoundEvent enableSound, SoundEvent disableSound) {
         super(properties);
@@ -59,7 +59,7 @@ public class KeypadBlock extends BaseEntityBlock {
         this.disableSound = disableSound;
     }
 
-    public static final MapCodec<KeypadBlock> CODEC = simpleCodec(properties -> new KeypadBlock(properties, enableSound, disableSound));
+    public final MapCodec<KeypadBlock> CODEC = simpleCodec(properties -> new KeypadBlock(properties, enableSound, disableSound));
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag tooltipFlag) {
@@ -219,11 +219,11 @@ public class KeypadBlock extends BaseEntityBlock {
                 return;
             }
 
-            player.playNotifySound(enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+            level.playSound(null, pos, enableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             power(true, state, level, pos, player);
             SecureLib.delayTick(20, ()-> {
                 power(false, state, level, pos, player);
-                player.playNotifySound(disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.playSound(null, pos, disableSound, SoundSource.BLOCKS, 1.0F, 1.0F);
             });
         }
     }

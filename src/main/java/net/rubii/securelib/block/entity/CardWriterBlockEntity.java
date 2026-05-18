@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.rubii.securelib.api.SecureLibUtils;
 import net.rubii.securelib.block.custom.CardWriterBlock;
 import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.screen.custom.CardWriterMenu;
@@ -211,11 +212,10 @@ public class CardWriterBlockEntity extends BlockEntity implements MenuProvider {
 
     private boolean hasRecipe(){
         ItemStack output = new ItemStack(inventory.getStackInSlot(INPUT_SLOT).getItem(), 1);
-        return (inventory.getStackInSlot(INPUT_SLOT).is(ModTags.Items.DATA_RECEIVER)) &&
+        return (inventory.getStackInSlot(INPUT_SLOT).is(ModTags.Items.DATA_RECEIVERS)) &&
                 canInsertAmountIntoOutputSlot(output.getCount()) &&
                 canInsertItemIntoOutputSlot(output) &&
-                inventory.getStackInSlot(INPUT_SLOT).get(ModDataComponents.CLEARANCE) == null &&
-                inventory.getStackInSlot(INPUT_SLOT).get(ModDataComponents.FREQUENCY) == null &&
+                SecureLibUtils.hasNoData(inventory.getStackInSlot(INPUT_SLOT)) &&
                 frequency != null && !frequency.isEmpty();
     }
 

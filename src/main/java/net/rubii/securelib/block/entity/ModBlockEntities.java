@@ -33,6 +33,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("card_writer_be", () -> BlockEntityType.Builder.of(
                     CardWriterBlockEntity::new, ModBlocks.CARD_WRITER.get()).build(null));
 
+    public static final Supplier<BlockEntityType<CardWriterAltBlockEntity>> CARD_WRITER_ALT_BE =
+            BLOCK_ENTITIES.register("card_writer_alt_be", () -> BlockEntityType.Builder.of(
+                    CardWriterAltBlockEntity::new, ModBlocks.CARD_WRITER_ALT.get()).build(null));
+
     public static void register(IEventBus bus) {
         BLOCK_ENTITIES.register(bus);
     }

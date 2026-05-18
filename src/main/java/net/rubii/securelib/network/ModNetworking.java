@@ -30,6 +30,21 @@ public class ModNetworking {
         );
 
         registrar.playToServer(
+                CardReaderTriPayload.TYPE,
+                CardReaderTriPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof CardReaderBlockEntity reader) {
+                            reader.setFrequency(payload.frequency());
+                            reader.setClearances(payload.lClearance(), payload.mClearance(), payload.rClearance());
+                            reader.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
                 KeypadPayloadCode.TYPE,
                 KeypadPayloadCode.STREAM_CODEC,
                 (payload, context) -> {
@@ -67,6 +82,21 @@ public class ModNetworking {
                         if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadReaderBlockEntity reader) {
                             reader.setFrequency(payload.frequency());
                             reader.setClearance(payload.clearance());
+                            reader.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
+                KeypadReaderTriPayload.TYPE,
+                KeypadReaderTriPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof KeypadReaderBlockEntity reader) {
+                            reader.setFrequency(payload.frequency());
+                            reader.setClearances(payload.lClearance(), payload.mClearance(), payload.rClearance());
                             reader.setChanged();
                         }
                     });
@@ -126,6 +156,21 @@ public class ModNetworking {
                         if (player.level().getBlockEntity(payload.blockPos()) instanceof CardWriterBlockEntity writer) {
                             writer.setFrequency(payload.frequency());
                             writer.setClearance(payload.clearance());
+                            writer.setChanged();
+                        }
+                    });
+                }
+        );
+
+        registrar.playToServer(
+                CardWriterAltPayload.TYPE,
+                CardWriterAltPayload.STREAM_CODEC,
+                (payload, context) -> {
+                    context.enqueueWork(() -> {
+                        ServerPlayer player = (ServerPlayer) context.player();
+                        if (player.level().getBlockEntity(payload.blockPos()) instanceof CardWriterAltBlockEntity writer) {
+                            writer.setFrequency(payload.frequency());
+                            writer.setClearances(payload.lClearance(), payload.mClearance(), payload.rClearance());
                             writer.setChanged();
                         }
                     });

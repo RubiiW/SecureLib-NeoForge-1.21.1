@@ -3,17 +3,20 @@
   "category": "redstone",
   "ingredients": [
     {
-      "item": "minecraft:redstone"
+      "item": "securelib:magnetic_band"
     },
     {
-      "tag": "c:ingots/iron"
+      "item": "securelib:blank_card"
+    },
+    {
+      "item": "securelib:data_chip"
     },
     {
       "item": "securelib:data_chip"
     }
   ],
   "result": {
-    "id": "securelib:reader_editor",
+    "id": "securelib:tricard",
     "count": 1
   }
 }

@@ -19,6 +19,20 @@ public class ModDataComponents {
             register("clearance", builder ->
                     builder.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
             );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CLEARANCE_R =
+            register("clearance_r", builder ->
+                    builder.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+            );
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CLEARANCE_M =
+            register("clearance_m", builder ->
+                    builder.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+            );
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> CLEARANCE_L =
+            register("clearance_l", builder ->
+                    builder.persistent(ExtraCodecs.NON_NEGATIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+            );
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FREQUENCY =
             register("frequency", builder ->
                     builder.persistent(ExtraCodecs.intRange(-2147483648, 2147483647)).networkSynchronized(ByteBufCodecs.VAR_INT)

@@ -14,10 +14,7 @@ import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.network.ModNetworking;
 import net.rubii.securelib.screen.ModMenuTypes;
-import net.rubii.securelib.screen.custom.CardPrinterScreen;
-import net.rubii.securelib.screen.custom.CardWriterScreen;
-import net.rubii.securelib.screen.custom.KeypadReaderScreen;
-import net.rubii.securelib.screen.custom.KeypadScreen;
+import net.rubii.securelib.screen.custom.*;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -77,6 +74,7 @@ public class SecureLib {
             event.register(ModMenuTypes.KEYPAD_READER_MENU.get(), KeypadReaderScreen::new);
             event.register(ModMenuTypes.CARD_PRINTER_MENU.get(), CardPrinterScreen::new);
             event.register(ModMenuTypes.CARD_WRITER_MENU.get(), CardWriterScreen::new);
+            event.register(ModMenuTypes.CARD_WRITER_ALT_MENU.get(), CardWriterAltScreen::new);
         }
 
         @SubscribeEvent

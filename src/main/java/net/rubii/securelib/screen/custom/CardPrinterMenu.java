@@ -45,7 +45,7 @@ public class CardPrinterMenu extends AbstractContainerMenu {
         {
             @Override
             public boolean mayPlace(ItemStack stack){
-                return stack.is(ModTags.Items.KEYCARDS);
+                return stack.is(ModTags.Items.CARDS);
             }
         });
 

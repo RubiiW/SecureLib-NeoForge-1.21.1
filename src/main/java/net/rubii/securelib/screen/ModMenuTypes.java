@@ -9,10 +9,7 @@ import net.neoforged.neoforge.network.IContainerFactory;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.screen.custom.CardPrinterMenu;
-import net.rubii.securelib.screen.custom.CardWriterMenu;
-import net.rubii.securelib.screen.custom.KeypadMenu;
-import net.rubii.securelib.screen.custom.KeypadReaderMenu;
+import net.rubii.securelib.screen.custom.*;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -29,6 +26,9 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<CardWriterMenu>> CARD_WRITER_MENU =
             registerMenuType("card_writer_menu", CardWriterMenu::new);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<CardWriterAltMenu>> CARD_WRITER_ALT_MENU =
+            registerMenuType("card_writer_alt_menu", CardWriterAltMenu::new);
 
     private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));

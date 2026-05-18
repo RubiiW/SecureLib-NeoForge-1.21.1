@@ -22,24 +22,33 @@
   "block.securelib.card_printer": "Card Printer",
   "block.securelib.card_printer.default_name": "Keycard Name",
   "block.securelib.card_printer.default_color": "6565f5",
-  "block.securelib.card_writer": "Card Writer",
 
+  "block.securelib.card_writer": "Card Writer",
+  "block.securelib.tricard_writer": "Tricard Writer",
+  "block.securelib.card_writer.normal": "Normal Mode",
+  "block.securelib.card_writer.tridata": "Tri-Data Mode",
   "block.securelib.card_writer.frequency": "Frequency",
   "block.securelib.card_writer.clearance": "Clearance",
-  "block.securelib.card_writer.input_slot_limitation": "May only take Data Receivers (#data_receiver)",
+  "block.securelib.card_writer.clearances": "Clearances",
+  "block.securelib.card_writer.input_slot_limitation": "May only take Data Receivers (#data_receivers)",
+  "block.securelib.card_writer.input_slot_limitation_alt": "May only take Tri-Data Receivers (#tridata_receivers)",
 
-  "gui.securelib.card_printer.card_name": "Keycard Name",
+  "gui.securelib.card_printer.card_name": "Name",
   "gui.securelib.card_printer.card_color": "Color",
 
   "item.securelib.blank_card": "Blank Card",
   "item.securelib.magnetic_band": "Magnetic Band",
   "item.securelib.data_chip": "Data Chip",
 
-  "item.securelib.operator_keycard": "Operator Keycard",
-
+  "item.securelib.operator_keycard": "Operator Card",
   "item.securelib.keycard": "Keycard",
-  "item.securelib.keycard.missing_data": "This keycard has no data yet",
+  "item.securelib.tricard": "Tricard",
 
+  "item.securelib.card": "Access Card",
+  "item.securelib.card.missing_data": "This card has no data yet",
+  "item.securelib.card.type_mismatch": "This card is not compatible",
+
+  "item.securelib.trireader_editor": "Tri-Reader Editor",
   "item.securelib.reader_editor": "Reader Editor",
   "item.securelib.reader_editor.missing_data": "You need to configure your Editor in a Card Writer first",
 
@@ -47,6 +56,8 @@
   "item.securelib.data_reciever.mismatch_frequency_informative": "The required frequency is ",
   "item.securelib.data_reciever.mismatch_clearance": "Clearance is not high enough",
   "item.securelib.data_reciever.mismatch_clearance_informative": "The minimal required clearance is ",
+  "item.securelib.data_reciever.mismatch_clearances": "Clearances are not high enough",
+  "item.securelib.data_reciever.mismatch_clearances_informative": "The minimal required clearances are",
 
   "tooltip.securelib.data_receiver": "Data Receiver: Press [SHIFT] for more info",
   "tooltip.securelib.data_receiver.clearance": "Clearance:",
@@ -56,6 +67,12 @@
   "tooltip.securelib.data_receiver.edit_double": "Use a Card Printer & Writer to edit",
   "tooltip.securelib.data_receiver.edit_color": "Use a Card Printer to edit",
   "tooltip.securelib.data_receiver.edit_data": "Use a Card Writer to edit",
+
+  "tooltip.securelib.tridata_receiver": "Tri-Data Receiver: Press [SHIFT] for more info",
+  "tooltip.securelib.tridata_receiver.clearances": "Clearances:",
+  "tooltip.securelib.tridata_receiver.clearances.r": " →: ",
+  "tooltip.securelib.tridata_receiver.clearances.m": " □: ",
+  "tooltip.securelib.tridata_receiver.clearances.l": " ←: ",
 
   "tooltip.securelib.keypads": "Place it and right click to configure",
 

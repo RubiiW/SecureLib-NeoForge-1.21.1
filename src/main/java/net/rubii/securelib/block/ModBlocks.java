@@ -21,7 +21,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CARD_READER = registerBlock("card_reader", () ->
             new CardReaderBlock(BlockBehaviour.Properties.of()
             .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion(),
-                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, true
+                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.DECORATED_POT_BREAK, true
     ));
 
     public static final DeferredBlock<Block> KEYPAD = registerBlock("keypad", () ->
@@ -33,17 +33,23 @@ public class ModBlocks {
     public static final DeferredBlock<Block> KEYPAD_READER = registerBlock("keypad_reader", () ->
             new KeypadReaderBlock(BlockBehaviour.Properties.of()
             .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion(),
-                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, true
+                    SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON, SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF, SoundEvents.DECORATED_POT_BREAK, true
     ));
 
     public static final DeferredBlock<Block> CARD_PRINTER = registerBlock("card_printer", () ->
             new CardPrinterBlock(BlockBehaviour.Properties.of()
             .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
     ));
+
     public static final DeferredBlock<Block> CARD_WRITER = registerBlock("card_writer", () ->
             new CardWriterBlock(BlockBehaviour.Properties.of()
             .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
     ));
+
+    public static final DeferredBlock<Block> CARD_WRITER_ALT = registerBlock("tricard_writer", () ->
+            new CardWriterAltBlock(BlockBehaviour.Properties.of()
+                    .strength(30f).destroyTime(1f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion()
+            ));
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
         DeferredBlock<T> toReturn = BLOCKS.register(name, block);

@@ -9,23 +9,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import net.rubii.securelib.block.ModBlocks;
+import net.rubii.securelib.block.entity.CardWriterAltBlockEntity;
 import net.rubii.securelib.block.entity.CardWriterBlockEntity;
 import net.rubii.securelib.screen.ModMenuTypes;
 import net.rubii.securelib.util.ModTags;
 
-public class CardWriterMenu extends AbstractContainerMenu {
+public class CardWriterAltMenu extends AbstractContainerMenu {
 
-    public final CardWriterBlockEntity blockEntity;
+    public final CardWriterAltBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public CardWriterMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
+    public CardWriterAltMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
         this(id, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
     }
 
-    public CardWriterMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(ModMenuTypes.CARD_WRITER_MENU.get(), id);
-        this.blockEntity = ((CardWriterBlockEntity)entity);
+    public CardWriterAltMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(ModMenuTypes.CARD_WRITER_ALT_MENU.get(), id);
+        this.blockEntity = ((CardWriterAltBlockEntity)entity);
         this.level = inv.player.level();
         this.data = data;
 
@@ -37,7 +38,7 @@ public class CardWriterMenu extends AbstractContainerMenu {
         {
             @Override
             public boolean mayPlace(ItemStack stack){
-                return stack.is(ModTags.Items.DATA_RECEIVERS);
+                return stack.is(ModTags.Items.TRIDATA_RECEIVERS);
             }
         });
 
@@ -117,7 +118,7 @@ public class CardWriterMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.CARD_WRITER.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, ModBlocks.CARD_WRITER_ALT.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory){

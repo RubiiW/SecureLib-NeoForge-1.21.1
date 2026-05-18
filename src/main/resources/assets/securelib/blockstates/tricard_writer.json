@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "securelib:block/tricard_writer"
+    },
+    "facing=south": {
+      "model": "securelib:block/tricard_writer",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "securelib:block/tricard_writer",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "securelib:block/tricard_writer",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer4": "securelib:item/tricard_l",
+    "layer3": "securelib:item/tricard_m",
+    "layer2": "securelib:item/tricard_r",
+    "layer1": "securelib:item/tricard",
+    "layer0": "securelib:item/tricard_overlay"
+  }
+}

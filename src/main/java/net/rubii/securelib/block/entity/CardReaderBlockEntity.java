@@ -18,11 +18,17 @@ public class CardReaderBlockEntity extends BlockEntity {
 
     private Integer frequency = 0; // DO NOT REMOVE THE = 0 OR THE THING EXPLODE
     private Integer clearance = 0;
+    private Integer lClearance = -1;
+    private Integer mClearance = -1;
+    private Integer rClearance = -1;
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         tag.putInt("frequency", frequency);
         tag.putInt("clearance", clearance);
+        tag.putInt("lClearance", lClearance);
+        tag.putInt("mClearance", mClearance);
+        tag.putInt("rClearance", rClearance);
 
         super.saveAdditional(tag, registries);
     }
@@ -33,14 +39,39 @@ public class CardReaderBlockEntity extends BlockEntity {
 
         frequency = tag.getInt("frequency");
         clearance = tag.getInt("clearance");
+        lClearance = tag.getInt("lClearance");
+        mClearance = tag.getInt("mClearance");
+        rClearance = tag.getInt("rClearance");
     }
 
     public Integer getClearance() {
         return clearance == null ? 0 : clearance;
     }
 
+    public Integer getLClearance() {
+        return lClearance == null ? -1 : lClearance;
+    }
+
+    public Integer getMClearance() {
+        return mClearance == null ? -1 : mClearance;
+    }
+
+    public Integer getRClearance() {
+        return rClearance == null ? -1 : rClearance;
+    }
+
     public void setClearance(Integer clear) {
         this.clearance = clear;
+        setChanged();
+        if (!level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public void setClearances(Integer l, Integer m, Integer r) {
+        this.lClearance = l;
+        this.mClearance = m;
+        this.rClearance = r;
         setChanged();
         if (!level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
