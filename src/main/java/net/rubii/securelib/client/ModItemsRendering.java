@@ -11,12 +11,12 @@ import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.item.ModItems;
 
 @EventBusSubscriber(modid = SecureLib.MODID, value = Dist.CLIENT)
-public class ModItemColorRenderer {
+public class ModItemsRendering {
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, tintIndex) -> {
-                    if (tintIndex != 1) return 0xFFFFFFFF;
+        event.register((stack, layerIndex) -> {
+                    if (layerIndex != 1) return 0xFFFFFFFF;
                     if (stack.get(DataComponents.DYED_COLOR) == null) return 0xFFFFFFFF;
 
                     DyedItemColor color = stack.get(DataComponents.DYED_COLOR);
@@ -24,8 +24,8 @@ public class ModItemColorRenderer {
                 },
                 ModItems.KEYCARD.get()
         );
-        event.register((stack, tintIndex) -> {
-                    if (tintIndex != 1) return 0xFFFFFFFF;
+        event.register((stack, layerIndex) -> {
+                    if (layerIndex != 1) return 0xFFFFFFFF;
                     if (stack.get(DataComponents.DYED_COLOR) == null) return 0xFFFFFFFF;
 
                     DyedItemColor color = stack.get(DataComponents.DYED_COLOR);
@@ -33,23 +33,23 @@ public class ModItemColorRenderer {
                 },
                 ModItems.OPERATOR_KEYCARD.get()
         );
-        event.register((stack, tintIndex) -> {
-                    if (tintIndex == 1){
+        event.register((stack, layerIndex) -> {
+                    if (layerIndex == 1){
                         if (stack.get(DataComponents.DYED_COLOR) == null) return 0xFFFFFFFF;
 
                         DyedItemColor color = stack.get(DataComponents.DYED_COLOR);
                         return 0xFF000000 | color.rgb();
-                    } else if (tintIndex == 2){
+                    } else if (layerIndex == 2){
                         if (stack.get(ModDataComponents.CLEARANCE_R) == null) return 0xFF8D8D8D;
                         int level = stack.get(ModDataComponents.CLEARANCE_R);
 
                         return getFromLevel(level);
-                    } else if (tintIndex == 3){
+                    } else if (layerIndex == 3){
                         if (stack.get(ModDataComponents.CLEARANCE_M) == null) return 0xFF8D8D8D;
                         int level = stack.get(ModDataComponents.CLEARANCE_M);
 
                         return getFromLevel(level);
-                    } else if (tintIndex == 4){
+                    } else if (layerIndex == 4){
                         if (stack.get(ModDataComponents.CLEARANCE_L) == null) return 0xFF8D8D8D;
                         int level = stack.get(ModDataComponents.CLEARANCE_L);
 

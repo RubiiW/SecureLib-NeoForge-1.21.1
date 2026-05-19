@@ -585,44 +585,48 @@ public class SecureLibUtils {
     }
 
     /*
-    KEYCARD
+    CARD
      */
 
-    public static ItemStack keycard(ItemStack stack, Component name, String rgb, boolean showInTooltip) {
-        if (stack.is(ModTags.Items.KEYCARDS)) {
+    public static ItemStack card(ItemStack stack, Component name, String rgb, boolean showInTooltip) {
+        if (stack.is(ModTags.Items.CARDS)) {
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
             stack.set(DataComponents.ITEM_NAME, name);
         }else{
-            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Tricard");
         }
 
         return stack;
     }
 
-    public static ItemStack keycard(ItemStack stack, Component name, Integer rgb, boolean showInTooltip) {
-        if (stack.is(ModTags.Items.KEYCARDS)) {
+    public static ItemStack card(ItemStack stack, Component name, Integer rgb, boolean showInTooltip) {
+        if (stack.is(ModTags.Items.CARDS)) {
             String str = rgb.toString().split("x")[1];
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
             stack.set(DataComponents.ITEM_NAME, name);
         }else{
-            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Tricard");
         }
 
         return stack;
     }
 
-    public static ItemStack keycard(ItemStack stack, Component name, Integer r, Integer g, Integer b, boolean showInTooltip) {
-        if (stack.is(ModTags.Items.KEYCARDS)) {
+    public static ItemStack card(ItemStack stack, Component name, Integer r, Integer g, Integer b, boolean showInTooltip) {
+        if (stack.is(ModTags.Items.CARDS)) {
             String rgb = r.toString() + b.toString() + g.toString();
             String str = rgb.split("x")[1];
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
             stack.set(DataComponents.ITEM_NAME, name);
         }else{
-            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Keycard");
+            SecureLib.LOGGER.error("[SecureLibAPI] Error: ItemStack is not a Tricard");
         }
 
         return stack;
     }
+
+    /*
+    KEYCARD
+     */
 
     public static ItemStack keycard(Component name, String rgb, boolean showInTooltip) {
         ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
@@ -645,6 +649,40 @@ public class SecureLibUtils {
 
     public static ItemStack keycard(Component name, Integer r, Integer g, Integer b, boolean showInTooltip) {
         ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
+
+        String rgb = r.toString() + b.toString() + g.toString();
+        String str = rgb.split("x")[1];
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+        stack.set(DataComponents.ITEM_NAME, name);
+
+        return stack;
+    }
+
+    /*
+    TRICARD
+     */
+
+    public static ItemStack tricard(Component name, String rgb, boolean showInTooltip) {
+        ItemStack stack = new ItemStack(ModItems.TRICARD.get());
+
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
+        stack.set(DataComponents.ITEM_NAME, name);
+
+        return stack;
+    }
+
+    public static ItemStack tricard(Component name, Integer rgb, boolean showInTooltip) {
+        ItemStack stack = new ItemStack(ModItems.TRICARD.get());
+
+        String str = rgb.toString().split("x")[1];
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(str, 16), showInTooltip));
+        stack.set(DataComponents.ITEM_NAME, name);
+
+        return stack;
+    }
+
+    public static ItemStack tricard(Component name, Integer r, Integer g, Integer b, boolean showInTooltip) {
+        ItemStack stack = new ItemStack(ModItems.TRICARD.get());
 
         String rgb = r.toString() + b.toString() + g.toString();
         String str = rgb.split("x")[1];
