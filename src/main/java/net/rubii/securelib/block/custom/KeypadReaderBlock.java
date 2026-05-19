@@ -299,9 +299,8 @@ public class KeypadReaderBlock extends BaseEntityBlock {
 
             switch (SecureLibUtils.canInteract(be, stack)){
                 case BLOCK_NO_DATA: {
-                    Minecraft.getInstance().getConnection().send(
-                            new KeypadReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
-                    );
+                    be.setClearance(stack.get(ModDataComponents.CLEARANCE));
+                    be.setFrequency(stack.get(ModDataComponents.FREQUENCY));
                     level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }
@@ -338,14 +337,12 @@ public class KeypadReaderBlock extends BaseEntityBlock {
 
             switch (SecureLibUtils.canInteract(be, stack)){
                 case BLOCK_NO_DATA: {
-                    Minecraft.getInstance().getConnection().send(
-                            new KeypadReaderTriPayload(
-                                    pos, stack.get(ModDataComponents.FREQUENCY.get()),
-                                    stack.get(ModDataComponents.CLEARANCE_L.get()),
-                                    stack.get(ModDataComponents.CLEARANCE_M.get()),
-                                    stack.get(ModDataComponents.CLEARANCE_R.get())
-                            )
+                    be.setClearances(
+                            stack.get(ModDataComponents.CLEARANCE_L),
+                            stack.get(ModDataComponents.CLEARANCE_M),
+                            stack.get(ModDataComponents.CLEARANCE_R)
                     );
+                    be.setFrequency(stack.get(ModDataComponents.FREQUENCY));
                     level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }

@@ -287,9 +287,8 @@ public class CardReaderBlock extends BaseEntityBlock {
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case BLOCK_NO_DATA: {
-                    Minecraft.getInstance().getConnection().send(
-                            new CardReaderPayload(pos, stack.get(ModDataComponents.FREQUENCY.get()), stack.get(ModDataComponents.CLEARANCE.get()))
-                    );
+                    be.setClearance(stack.get(ModDataComponents.CLEARANCE));
+                    be.setFrequency(stack.get(ModDataComponents.FREQUENCY));
                     level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }
@@ -322,14 +321,12 @@ public class CardReaderBlock extends BaseEntityBlock {
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case BLOCK_NO_DATA: {
-                    Minecraft.getInstance().getConnection().send(
-                            new CardReaderTriPayload(
-                                    pos, stack.get(ModDataComponents.FREQUENCY.get()),
-                                    stack.get(ModDataComponents.CLEARANCE_L.get()),
-                                    stack.get(ModDataComponents.CLEARANCE_M.get()),
-                                    stack.get(ModDataComponents.CLEARANCE_R.get())
-                            )
+                    be.setClearances(
+                            stack.get(ModDataComponents.CLEARANCE_L),
+                            stack.get(ModDataComponents.CLEARANCE_M),
+                            stack.get(ModDataComponents.CLEARANCE_R)
                     );
+                    be.setFrequency(stack.get(ModDataComponents.FREQUENCY));
                     level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
                     return  ItemInteractionResult.SUCCESS;
                 }
