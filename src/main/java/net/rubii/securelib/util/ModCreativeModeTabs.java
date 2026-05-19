@@ -18,9 +18,7 @@ public class ModCreativeModeTabs {
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SecureLib.MODID);
 
     private static ItemStack icon(){
-        ItemStack ICON = new ItemStack(ModItems.KEYCARD.get());
-        SecureLibUtils.keycard(Component.empty(), "B7BCE8",false);
-        return ICON;
+        return SecureLibUtils.keycard(Component.empty(), "B7BCE8",false);
     }
 
     public static final Supplier<CreativeModeTab> SECURELIB_TAB = CREATIVE_MODE_TAB.register("securelib_tab",
