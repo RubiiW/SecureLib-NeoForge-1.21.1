@@ -287,6 +287,14 @@ public class CardReaderBlock extends BaseEntityBlock {
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case BLOCK_NO_DATA: {
+                    if (!SecureLibUtils.hasNoClearance(stack) && !SecureLibUtils.hasNoFrequency(stack)) {
+                        player.displayClientMessage(
+                                Component.translatable("item.securelib.reader_editor.missing_data"),
+                                true
+                        );
+                        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    }
+
                     be.setClearance(stack.get(ModDataComponents.CLEARANCE));
                     be.setFrequency(stack.get(ModDataComponents.FREQUENCY));
                     level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -309,9 +317,12 @@ public class CardReaderBlock extends BaseEntityBlock {
         if (level.isClientSide()) return ItemInteractionResult.SUCCESS;
 
         if (blockEntity instanceof CardReaderBlockEntity be){
-            if (!SecureLibUtils.hasNoData(be)){
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.already_configured"), true);
-                return ItemInteractionResult.SUCCESS;
+            if (!SecureLibUtils.hasNoClearance(stack) && !SecureLibUtils.hasNoFrequency(stack)) {
+                player.displayClientMessage(
+                        Component.translatable("item.securelib.reader_editor.missing_data"),
+                        true
+                );
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
 
             switch (SecureLibUtils.canInteract(be, stack)){
@@ -321,6 +332,14 @@ public class CardReaderBlock extends BaseEntityBlock {
                     return  ItemInteractionResult.SUCCESS;
                 }
                 case BLOCK_NO_DATA: {
+                    if (SecureLibUtils.hasNoData(stack)) {
+                        player.displayClientMessage(
+                                Component.translatable("item.securelib.reader_editor.missing_data"),
+                                true
+                        );
+                        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    }
+
                     be.setClearances(
                             stack.get(ModDataComponents.CLEARANCE_L),
                             stack.get(ModDataComponents.CLEARANCE_M),

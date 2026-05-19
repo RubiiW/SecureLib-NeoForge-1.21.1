@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.block.custom.KeypadReaderBlock;
 import net.rubii.securelib.screen.custom.KeypadReaderMenu;
 
@@ -69,6 +70,11 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public void setCode(String code) {
+        if (code == null){
+            SecureLib.LOGGER.error("Tried to set null Code, cancelling");
+            return;
+        }
+
         this.code = code;
         setChanged();
         if (!level.isClientSide) {
@@ -81,6 +87,11 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public void setInput(String input) {
+        if (input == null){
+            SecureLib.LOGGER.error("Tried to set null Input, cancelling");
+            return;
+        }
+
         this.input = input;
         setChanged();
         if (!level.isClientSide) {
@@ -117,6 +128,11 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public void setClearance(Integer clear) {
+        if (clear == null){
+            SecureLib.LOGGER.error("Tried to set null Clearance, cancelling");
+            return;
+        }
+
         this.clearance = clear;
         setChanged();
         if (!level.isClientSide) {
@@ -125,6 +141,19 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public void setClearances(Integer l, Integer m, Integer r) {
+        if (l == null){
+            SecureLib.LOGGER.error("Tried to set null L Clearance, cancelling");
+            return;
+        }
+        if (m == null){
+            SecureLib.LOGGER.error("Tried to set null M Clearance, cancelling");
+            return;
+        }
+        if (r == null){
+            SecureLib.LOGGER.error("Tried to set null R Clearance, cancelling");
+            return;
+        }
+
         this.lClearance = l;
         this.mClearance = m;
         this.rClearance = r;
@@ -139,6 +168,11 @@ public class KeypadReaderBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public void setFrequency(Integer freq) {
+        if (freq == null){
+            SecureLib.LOGGER.error("Tried to set null Frequency, cancelling");
+            return;
+        }
+
         this.frequency = freq;
         setChanged();
         if (!level.isClientSide) {

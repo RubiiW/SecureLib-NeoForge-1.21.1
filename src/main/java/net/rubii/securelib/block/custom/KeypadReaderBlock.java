@@ -299,6 +299,14 @@ public class KeypadReaderBlock extends BaseEntityBlock {
 
             switch (SecureLibUtils.canInteract(be, stack)){
                 case BLOCK_NO_DATA: {
+                    if (!SecureLibUtils.hasNoClearance(stack) && !SecureLibUtils.hasNoFrequency(stack)) {
+                        player.displayClientMessage(
+                                Component.translatable("item.securelib.reader_editor.missing_data"),
+                                true
+                        );
+                        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    }
+
                     be.setClearance(stack.get(ModDataComponents.CLEARANCE));
                     be.setFrequency(stack.get(ModDataComponents.FREQUENCY));
                     level.playSound(null, pos, failSound, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -337,6 +345,14 @@ public class KeypadReaderBlock extends BaseEntityBlock {
 
             switch (SecureLibUtils.canInteract(be, stack)){
                 case BLOCK_NO_DATA: {
+                    if (!SecureLibUtils.hasNoClearance(stack) && !SecureLibUtils.hasNoFrequency(stack)) {
+                        player.displayClientMessage(
+                                Component.translatable("item.securelib.reader_editor.missing_data"),
+                                true
+                        );
+                        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                    }
+
                     be.setClearances(
                             stack.get(ModDataComponents.CLEARANCE_L),
                             stack.get(ModDataComponents.CLEARANCE_M),

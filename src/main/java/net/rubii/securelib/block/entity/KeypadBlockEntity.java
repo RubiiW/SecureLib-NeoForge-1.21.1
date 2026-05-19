@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.rubii.securelib.SecureLib;
 import net.rubii.securelib.block.custom.KeypadBlock;
 import net.rubii.securelib.screen.custom.KeypadMenu;
 
@@ -51,6 +52,11 @@ public class KeypadBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void setCode(String code) {
+        if (code == null){
+            SecureLib.LOGGER.error("Tried to set null Code, cancelling");
+            return;
+        }
+
         this.code = code;
         setChanged();
         if (!level.isClientSide) {
@@ -63,6 +69,11 @@ public class KeypadBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public void setInput(String input) {
+        if (input == null){
+            SecureLib.LOGGER.error("Tried to set null Input, cancelling");
+            return;
+        }
+
         this.input = input;
         setChanged();
         if (!level.isClientSide) {

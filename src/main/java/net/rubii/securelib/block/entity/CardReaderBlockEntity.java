@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.rubii.securelib.SecureLib;
 
 import javax.annotation.Nullable;
 
@@ -61,6 +62,11 @@ public class CardReaderBlockEntity extends BlockEntity {
     }
 
     public void setClearance(Integer clear) {
+        if (clear == null){
+            SecureLib.LOGGER.error("Tried to set null Clearance, cancelling");
+            return;
+        }
+
         this.clearance = clear;
         setChanged();
         if (!level.isClientSide) {
@@ -69,6 +75,19 @@ public class CardReaderBlockEntity extends BlockEntity {
     }
 
     public void setClearances(Integer l, Integer m, Integer r) {
+        if (l == null){
+            SecureLib.LOGGER.error("Tried to set null L Clearance, cancelling");
+            return;
+        }
+        if (m == null){
+            SecureLib.LOGGER.error("Tried to set null M Clearance, cancelling");
+            return;
+        }
+        if (r == null){
+            SecureLib.LOGGER.error("Tried to set null R Clearance, cancelling");
+            return;
+        }
+
         this.lClearance = l;
         this.mClearance = m;
         this.rClearance = r;
@@ -83,6 +102,11 @@ public class CardReaderBlockEntity extends BlockEntity {
     }
 
     public void setFrequency(Integer freq) {
+        if (freq == null){
+            SecureLib.LOGGER.error("Tried to set null Frequency, cancelling");
+            return;
+        }
+        
         this.frequency = freq;
         setChanged();
         if (!level.isClientSide) {
