@@ -79,5 +79,7 @@
   "tooltip.securelib.keypad_readers.1": "Place it and right click to configure the Keypad",
   "tooltip.securelib.keypad_readers.2": "Use a Reader Editor to configure the Reader",
 
-  "tooltip.securelib.card_readers": "Use a Reader Editor to configure"
+  "tooltip.securelib.card_readers": "Use a Reader Editor to configure",
+
+  "config.jade.plugin_securelib.card_readers" : "Card Readers"
 }
