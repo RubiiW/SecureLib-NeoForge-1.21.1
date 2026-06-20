@@ -204,6 +204,11 @@ public class KeypadReaderBlock extends BaseEntityBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
+        if (SecureLibUtils.isSkeleton(stack)) {
+            activate(level, state, player, pos);
+            return ItemInteractionResult.SUCCESS;
+        }
+
         if (stack.is(ModTags.Items.KEYPAD_BYPASS)) return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 
         if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
@@ -214,18 +219,12 @@ public class KeypadReaderBlock extends BaseEntityBlock {
             return keycard(blockEntity, stack, state, level, pos, player);
         }else if (player.getItemInHand(hand).is(ModTags.Items.TRICARDS)){
             return tricard(blockEntity, stack, state, level, pos, player);
+        }else if (SecureLibUtils.hasNoData(blockEntity)) {
+            player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
         }else {
-            if (SecureLibUtils.hasNoData(blockEntity)) {
-                player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
-            } else {
-                if (player.getItemInHand(hand).is(ModTags.Items.SKELETON_KEYCARDS)) {
-                    activate(level, state, player, pos);
-                }else{
-                    player.displayClientMessage(Component.translatable("block.securelib.card_reader.need_keycard"), true);
-                }
-            }
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            player.displayClientMessage(Component.translatable("block.securelib.card_reader.need_keycard"), true);
         }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

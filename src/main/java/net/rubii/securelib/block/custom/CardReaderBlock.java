@@ -241,10 +241,12 @@ public class CardReaderBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof CardReaderBlockEntity) {
-            CardReaderBlockEntity blockEntity = (CardReaderBlockEntity) level.getBlockEntity(pos);
+        if (level.getBlockEntity(pos) instanceof CardReaderBlockEntity blockEntity) {
 
-            if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
+            if (SecureLibUtils.isSkeleton(stack)) {
+                activate(level, state, player, pos);
+                return ItemInteractionResult.SUCCESS;
+            }else if (player.getItemInHand(hand).is(ModItems.READER_EDITOR)){
                 return readerEditor(blockEntity, stack, pos, player, level);
             }else if (player.getItemInHand(hand).is(ModItems.TRIREADER_EDITOR)){
                 return trireaderEditor(blockEntity, stack, pos, player, level);
@@ -252,18 +254,12 @@ public class CardReaderBlock extends BaseEntityBlock {
                 return keycard(blockEntity, stack, state, level, pos, player);
             }else if (player.getItemInHand(hand).is(ModTags.Items.TRICARDS)){
                 return tricard(blockEntity, stack, state, level, pos, player);
+            }else if (SecureLibUtils.hasNoData(blockEntity)) {
+                player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
             }else {
-                if (SecureLibUtils.hasNoData(blockEntity)) {
-                    player.displayClientMessage(Component.translatable("block.securelib.card_reader.missing_data"), true);
-                } else {
-                    if (player.getItemInHand(hand).is(ModTags.Items.SKELETON_KEYCARDS)) {
-                        activate(level, state, player, pos);
-                    }else{
-                        player.displayClientMessage(Component.translatable("block.securelib.card_reader.need_keycard"), true);
-                    }
-                }
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                player.displayClientMessage(Component.translatable("block.securelib.card_reader.need_keycard"), true);
             }
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         } else {
             SecureLib.LOGGER.error("CardReaderBlock is not a CardReaderBlockEntity at pos: " + pos);
