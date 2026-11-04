@@ -3,8 +3,6 @@
   "values": [
     "securelib:card_printer",
     "securelib:card_writer",
-    "securelib:tricard_writer",
-    "securelib:card_reader",
-    "securelib:keypad"
+    "securelib:tricard_writer"
   ]
 }

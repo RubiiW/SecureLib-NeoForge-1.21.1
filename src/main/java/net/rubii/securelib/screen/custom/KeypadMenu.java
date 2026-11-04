@@ -8,33 +8,35 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.rubii.securelib.block.entity.KeypadBlockEntity;
+import net.rubii.securelib.api.block.entity.AbstractKeypadBlockEntity;
 import net.rubii.securelib.screen.ModMenuTypes;
+import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.util.Objects;
 
 public class KeypadMenu extends AbstractContainerMenu {
 
-    public final KeypadBlockEntity blockEntity;
+    public final AbstractKeypadBlockEntity blockEntity;
     private final Level level;
 
     public KeypadMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
-        this(id, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(id, inventory, Objects.requireNonNull(inventory.player.level().getBlockEntity(extraData.readBlockPos())));
     }
 
     public KeypadMenu(int id, Inventory inv, BlockEntity entity) {
         super(ModMenuTypes.KEYPAD_MENU.get(), id);
-        this.blockEntity = ((KeypadBlockEntity)entity);
+        this.blockEntity = ((AbstractKeypadBlockEntity)entity);
         this.level = entity.getLevel();
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int i) {
+    @NotNull
+    public ItemStack quickMoveStack(@NotNull Player player, int i) {
         return new ItemStack(Items.AIR);
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, level.getBlockState(blockEntity.getBlockPos()).getBlock()); //Bypasses invalidity for api support
+    public boolean stillValid(@NotNull Player player) {
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, level.getBlockState(blockEntity.getBlockPos()).getBlock());
     }
 }

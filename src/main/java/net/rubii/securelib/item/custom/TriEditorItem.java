@@ -8,8 +8,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.rubii.securelib.components.ModDataComponents;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TriEditorItem extends Item {
     public TriEditorItem(Properties properties) {
@@ -17,7 +19,7 @@ public class TriEditorItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             if (stack.get(DataComponents.DYED_COLOR) == null && stack.get(ModDataComponents.FREQUENCY) == null && stack.get(ModDataComponents.CLEARANCE) == null){
                 components.add(Component.translatable("tooltip.securelib.data_receiver.no_data").withStyle(ChatFormatting.GRAY));
@@ -28,16 +30,16 @@ public class TriEditorItem extends Item {
                 String lPrefix = Component.translatable("tooltip.securelib.tridata_receiver.clearances.l").getString();
                 String mPrefix = Component.translatable("tooltip.securelib.tridata_receiver.clearances.m").getString();
                 String rPrefix = Component.translatable("tooltip.securelib.tridata_receiver.clearances.r").getString();
-                String lValue = stack.get(ModDataComponents.CLEARANCE_L) == null ? "0" : stack.get(ModDataComponents.CLEARANCE_L).toString();
-                String mValue = stack.get(ModDataComponents.CLEARANCE_M) == null ? "0" : stack.get(ModDataComponents.CLEARANCE_M).toString();
-                String rValue = stack.get(ModDataComponents.CLEARANCE_R) == null ? "0" : stack.get(ModDataComponents.CLEARANCE_R).toString();
+                String lValue = stack.get(ModDataComponents.CLEARANCE_L) == null ? "0" : Objects.requireNonNull(stack.get(ModDataComponents.CLEARANCE_L)).toString();
+                String mValue = stack.get(ModDataComponents.CLEARANCE_M) == null ? "0" : Objects.requireNonNull(stack.get(ModDataComponents.CLEARANCE_M)).toString();
+                String rValue = stack.get(ModDataComponents.CLEARANCE_R) == null ? "0" : Objects.requireNonNull(stack.get(ModDataComponents.CLEARANCE_R)).toString();
                 Component component = Component.literal(lPrefix + lValue + ", "  + mPrefix + mValue + ", "  + rPrefix + rValue).withStyle(ChatFormatting.GRAY);
 
                 components.add(Component.translatable("tooltip.securelib.tridata_receiver.clearances").withStyle(ChatFormatting.GRAY));
                 components.add(component);
             }
             if (stack.get(ModDataComponents.FREQUENCY) != null){
-                String frequency = " " + stack.get(ModDataComponents.FREQUENCY).toString();
+                String frequency = " " + Objects.requireNonNull(stack.get(ModDataComponents.FREQUENCY));
                 String translated = Component.translatable("tooltip.securelib.data_receiver.frequency").getString();
                 Component component = Component.literal(translated + frequency).withStyle(ChatFormatting.GRAY);
 

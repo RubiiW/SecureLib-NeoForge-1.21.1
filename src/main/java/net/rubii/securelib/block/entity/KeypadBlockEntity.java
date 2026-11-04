@@ -1,139 +1,33 @@
 package net.rubii.securelib.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.block.custom.KeypadBlock;
+
+import net.rubii.securelib.api.block.entity.AbstractKeypadBlockEntity;
 import net.rubii.securelib.screen.custom.KeypadMenu;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 
-public class KeypadBlockEntity extends BlockEntity implements MenuProvider {
+public class KeypadBlockEntity extends AbstractKeypadBlockEntity implements MenuProvider {
     public KeypadBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.KEYPAD_BE.get(), pos, blockState);
     }
 
-    private String code = ""; // DO NOT REMOVE THE = "" OR THE THING EXPLODE
-    private String input = "";
-    private boolean removal = false;
-
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.putString("code", code);
-        tag.putString("input", input);
-        tag.putBoolean("removal", removal);
-
-        super.saveAdditional(tag, registries);
-    }
-
-    @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-
-        code = tag.getString("code");
-        input = tag.getString("input");
-        removal = tag.getBoolean("removal");
-    }
-
-    public String getCode() {
-        return code == null ? "" : code;
-    }
-
-    public void setCode(String code) {
-        if (code == null){
-            SecureLib.LOGGER.error("Tried to set null Code, cancelling");
-            return;
-        }
-
-        this.code = code;
-        setChanged();
-        if (!level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    public String getInput() {
-        return input == null ? "" : input;
-    }
-
-    public void setInput(String input) {
-        if (input == null){
-            SecureLib.LOGGER.error("Tried to set null Input, cancelling");
-            return;
-        }
-
-        this.input = input;
-        setChanged();
-        if (!level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    public boolean getRemoval() {
-        return removal;
-    }
-
-    public void setRemoval(boolean removal) {
-        this.removal = removal;
-        setChanged();
-        if (!level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    public void inputUpdated(UUID uuid) {
-        if (removal){
-            if (input.equals(code)) {
-                if (getBlockState().getBlock() instanceof KeypadBlock block){
-                    level.destroyBlock(getBlockPos(), true);
-                    level.updateNeighbourForOutputSignal(getBlockPos(), block);
-                }
-            }else{
-                if (getBlockState().getBlock() instanceof KeypadBlock block){
-                    removal = false;
-                    level.updateNeighbourForOutputSignal(getBlockPos(), block);
-                }
-            }
-        }else{
-            if (input.equals(code)) {
-                if (getBlockState().getBlock() instanceof KeypadBlock block){
-                    block.activate(level, getBlockState(), level.getPlayerByUUID(uuid), getBlockPos());
-                }
-            }
-        }
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket(){
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries){
-        return saveWithoutMetadata(pRegistries);
-    }
-
-    @Override
+    @NotNull
     public Component getDisplayName() {
         return Component.translatable("block.securelib.keypad");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
+    public AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory, @NotNull Player player) {
         return new KeypadMenu(i, inventory, this);
     }
 }

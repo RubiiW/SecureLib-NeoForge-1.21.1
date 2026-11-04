@@ -9,9 +9,9 @@ import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.rubii.securelib.SecureLib;
+import net.rubii.securelib.api.block.entity.AbstractCardReaderBlockEntity;
+import net.rubii.securelib.api.block.entity.AbstractKeypadReaderBlockEntity;
 import net.rubii.securelib.api.enums.CardInteractionResult;
-import net.rubii.securelib.block.entity.CardReaderBlockEntity;
-import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
 import net.rubii.securelib.components.ModDataComponents;
 import net.rubii.securelib.item.ModItems;
 import net.rubii.securelib.network.CardReaderPayload;
@@ -24,27 +24,21 @@ import java.util.Objects;
 
 public class SecureLibUtils {
 
-    /*
-    HAS NO FREQUENCY
-     */
-
+    //HAS NO FREQUENCY
     public static boolean hasNoFrequency(ItemStack stack) {
         return stack.getOrDefault(ModDataComponents.FREQUENCY, 0) == 0;
     }
 
     public static boolean hasNoFrequency(BlockEntity blockEntity) {
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             return be.getFrequency() == 0;
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             return be.getFrequency() == 0;
         }
         return false;
     }
 
-    /*
-    HAS NO CLEARANCE
-     */
-
+    //HAS NO CLEARANCE
     public static boolean hasNoClearance(ItemStack stack) {
         if (stack.is(ModTags.Items.KEYCARDS)){
             return stack.getOrDefault(ModDataComponents.CLEARANCE, 0) == 0;
@@ -57,18 +51,15 @@ public class SecureLibUtils {
     }
 
     public static boolean hasNoClearance(BlockEntity blockEntity) {
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             return be.getClearance() == 0 && be.getLClearance() == -1 && be.getMClearance() == -1 && be.getRClearance() == -1;
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             return be.getClearance() == 0 && be.getLClearance() == -1 && be.getMClearance() == -1 && be.getRClearance() == -1;
         }
         return true;
     }
 
-    /*
-    HAS NO DATA
-     */
-
+    //HAS NO DATA
     public static boolean hasNoData(int frequency, int clearance){
         return frequency == 0 && clearance == 0;
     }
@@ -85,10 +76,7 @@ public class SecureLibUtils {
         return hasNoFrequency(blockEntity) && hasNoClearance(blockEntity);
     }
 
-    /*
-    MATCH FREQUENCY
-    */
-
+    //MATCH FREQUENCY
     public static boolean matchFrequency(int blockFrequency, int itemFrequency) {
         return Objects.equals(blockFrequency, itemFrequency);
     }
@@ -96,9 +84,9 @@ public class SecureLibUtils {
     public static boolean matchFrequency(BlockEntity blockEntity, int itemFrequency) {
         int blockFrequency = 0;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
         }
 
@@ -116,9 +104,9 @@ public class SecureLibUtils {
     public static boolean matchFrequency(BlockEntity blockEntity, ItemStack stack) {
         int blockFrequency = 0;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
         }
 
@@ -127,10 +115,7 @@ public class SecureLibUtils {
         return matchFrequency(blockFrequency, stack.getOrDefault(ModDataComponents.FREQUENCY, 0));
     }
 
-    /*
-    HAS REQUIRED CLEARANCE
-     */
-
+    //HAS REQUIRED CLEARANCE
     public static boolean hasRequiredClearance(int blockClearance, int itemClearance) {
         return blockClearance <= itemClearance;
     }
@@ -138,9 +123,9 @@ public class SecureLibUtils {
     public static boolean hasRequiredClearance(BlockEntity blockEntity, int itemClearance) {
         int blockClearance = 0;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockClearance = be.getClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockClearance = be.getClearance();
         }
 
@@ -158,9 +143,9 @@ public class SecureLibUtils {
     public static boolean hasRequiredClearance(BlockEntity blockEntity, ItemStack stack) {
         int blockClearance = 0;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockClearance = be.getClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockClearance = be.getClearance();
         }
 
@@ -169,10 +154,7 @@ public class SecureLibUtils {
         return hasRequiredClearance(blockClearance, stack.getOrDefault(ModDataComponents.CLEARANCE, 0));
     }
 
-    /*
-    HAS REQUIRED CLEARANCES
-     */
-
+    //HAS REQUIRED CLEARANCES
     public static boolean hasRequiredClearances(int blockLClearance, int blockMClearance, int blockRClearance, int itemLClearance, int itemMClearance, int itemRClearance) {
         return blockLClearance <= itemLClearance && blockMClearance <= itemMClearance && blockRClearance <= itemRClearance;
     }
@@ -182,11 +164,11 @@ public class SecureLibUtils {
         int blockMClearance = -1;
         int blockRClearance = -1;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
             blockRClearance = be.getRClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
             blockRClearance = be.getRClearance();
@@ -212,11 +194,11 @@ public class SecureLibUtils {
         int blockMClearance = -1;
         int blockRClearance = -1;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
             blockRClearance = be.getRClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
             blockRClearance = be.getRClearance();
@@ -231,10 +213,7 @@ public class SecureLibUtils {
         return hasRequiredClearances(blockLClearance, blockMClearance, blockRClearance, itemLClearance, itemMClearance, itemRClearance);
     }
 
-    /*
-    CAN INTERACT
-     */
-
+    //CAN INTERACT
     public static CardInteractionResult canInteract(int blockFrequency, int blockClearance, int itemFrequency, int itemClearance) {
         if (hasNoData(blockFrequency, blockClearance)) return CardInteractionResult.BLOCK_NO_DATA;
         if (hasNoData(itemFrequency, itemClearance)) return CardInteractionResult.ITEM_NO_DATA;
@@ -254,10 +233,10 @@ public class SecureLibUtils {
         int blockFrequency = 0;
         int blockClearance = 0;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockClearance = be.getClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockClearance = be.getClearance();
         }
@@ -283,10 +262,10 @@ public class SecureLibUtils {
         int itemFrequency = stack.getOrDefault(ModDataComponents.FREQUENCY, 0);
         int itemClearance = stack.getOrDefault(ModDataComponents.CLEARANCE, 0);
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockClearance = be.getClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockClearance = be.getClearance();
         }
@@ -298,10 +277,7 @@ public class SecureLibUtils {
         return canInteract(blockFrequency, blockClearance, itemFrequency, itemClearance);
     }
 
-        /*
-    CAN TRI-INTERACT
-     */
-
+    //CAN TRI-INTERACT
     public static CardInteractionResult canTriInteract(int blockFrequency, int blockLClearance, int blockMClearance, int blockRClearance, int itemFrequency, int itemLClearance, int itemMClearance, int itemRClearance) {
         if (hasNoData(blockFrequency, blockLClearance, blockMClearance, blockRClearance)) return CardInteractionResult.BLOCK_NO_DATA;
         if (hasNoData(itemFrequency, itemLClearance, itemMClearance, itemRClearance)) return CardInteractionResult.ITEM_NO_DATA;
@@ -325,12 +301,12 @@ public class SecureLibUtils {
         int blockMClearance = -1;
         int blockRClearance = -1;
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
             blockRClearance = be.getRClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
@@ -364,12 +340,12 @@ public class SecureLibUtils {
         int itemMClearance = stack.getOrDefault(ModDataComponents.CLEARANCE_M, -1);
         int itemRClearance = stack.getOrDefault(ModDataComponents.CLEARANCE_R, -1);
 
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
             blockRClearance = be.getRClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
             blockLClearance = be.getLClearance();
             blockMClearance = be.getMClearance();
@@ -383,10 +359,7 @@ public class SecureLibUtils {
         return canTriInteract(blockFrequency, blockLClearance, blockMClearance, blockRClearance, itemFrequency, itemLClearance, itemMClearance, itemRClearance);
     }
 
-    /*
-    GET/SET FREQUENCY
-     */
-
+    //GET/SET FREQUENCY
     public static ItemStack setFrequency(ItemStack stack, int frequency) {
         stack.set(ModDataComponents.FREQUENCY, frequency);
         return stack;
@@ -398,22 +371,22 @@ public class SecureLibUtils {
 
         assert level != null;
         if (level.isClientSide()){
-            if (blockEntity instanceof CardReaderBlockEntity be) {
+            if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
                 Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
                         new CardReaderPayload(pos, frequency, be.getClearance())
                 );
                 return level.getBlockEntity(pos);
-            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
                 Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
                         new KeypadReaderPayload(pos, frequency, be.getClearance())
                 );
                 return level.getBlockEntity(pos);
             }
         } else {
-            if (blockEntity instanceof CardReaderBlockEntity be) {
+            if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
                 be.setFrequency(frequency);
                 return level.getBlockEntity(pos);
-            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
                 be.setFrequency(frequency);
                 return level.getBlockEntity(pos);
             }
@@ -429,19 +402,16 @@ public class SecureLibUtils {
         if (hasNoFrequency(blockEntity)) return 0;
 
         int blockFrequency = 0;
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockFrequency = be.getFrequency();
         }
 
         return blockFrequency;
     }
 
-    /*
-    GET/SET CLEARANCE
-     */
-
+    //GET/SET CLEARANCE
     public static ItemStack setClearance(ItemStack stack, int clearance) {
         stack.set(ModDataComponents.CLEARANCE, clearance);
         return stack;
@@ -453,22 +423,22 @@ public class SecureLibUtils {
 
         assert level != null;
         if (level.isClientSide()){
-            if (blockEntity instanceof CardReaderBlockEntity be) {
+            if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
                 Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
                         new CardReaderPayload(pos, be.getFrequency(), clearance)
                 );
                 return level.getBlockEntity(pos);
-            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
                 Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
                         new KeypadReaderPayload(pos, be.getFrequency(), clearance)
                 );
                 return level.getBlockEntity(pos);
             }
         } else {
-            if (blockEntity instanceof CardReaderBlockEntity be) {
+            if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
                 be.setClearance(clearance);
                 return level.getBlockEntity(pos);
-            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
                 be.setClearance(clearance);
                 return level.getBlockEntity(pos);
             }
@@ -484,19 +454,16 @@ public class SecureLibUtils {
         if (hasNoClearance(blockEntity)) return 0;
 
         int blockClearance = 0;
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockClearance = be.getClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockClearance = be.getClearance();
         }
 
         return blockClearance;
     }
 
-    /*
-    GET/SET CLEARANCES
-     */
-
+    //GET/SET CLEARANCES
     public static ItemStack setClearances(ItemStack stack, int lClearance, int mClearance, int rClearance) {
         stack.set(ModDataComponents.CLEARANCE_L, lClearance);
         stack.set(ModDataComponents.CLEARANCE_M, mClearance);
@@ -510,22 +477,22 @@ public class SecureLibUtils {
 
         assert level != null;
         if (level.isClientSide()){
-            if (blockEntity instanceof CardReaderBlockEntity be) {
+            if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
                 Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
                         new CardReaderTriPayload(pos, be.getFrequency(), lClearance, mClearance, rClearance)
                 );
                 return level.getBlockEntity(pos);
-            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
                 Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(
                         new KeypadReaderTriPayload(pos, be.getFrequency(), lClearance, mClearance, rClearance)
                 );
                 return level.getBlockEntity(pos);
             }
         } else {
-            if (blockEntity instanceof CardReaderBlockEntity be) {
+            if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
                 be.setClearances(lClearance, mClearance, rClearance);
                 return level.getBlockEntity(pos);
-            } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+            } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
                 be.setClearances(lClearance, mClearance, rClearance);
                 return level.getBlockEntity(pos);
             }
@@ -549,9 +516,9 @@ public class SecureLibUtils {
         if (hasNoClearance(blockEntity)) return -1;
 
         int blockClearance = -1;
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockClearance = be.getLClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockClearance = be.getLClearance();
         }
 
@@ -562,9 +529,9 @@ public class SecureLibUtils {
         if (hasNoClearance(blockEntity)) return -1;
 
         int blockClearance = -1;
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockClearance = be.getMClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockClearance = be.getMClearance();
         }
 
@@ -575,19 +542,16 @@ public class SecureLibUtils {
         if (hasNoClearance(blockEntity)) return -1;
 
         int blockClearance = -1;
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             blockClearance = be.getRClearance();
-        } else if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        } else if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             blockClearance = be.getRClearance();
         }
 
         return blockClearance;
     }
 
-    /*
-    CARD
-     */
-
+    //CARD
     public static ItemStack card(ItemStack stack, Component name, String rgb, boolean showInTooltip) {
         if (stack.is(ModTags.Items.CARDS)) {
             stack.set(DataComponents.DYED_COLOR, new DyedItemColor(Integer.parseInt(rgb, 16), showInTooltip));
@@ -624,10 +588,7 @@ public class SecureLibUtils {
         return stack;
     }
 
-    /*
-    KEYCARD
-     */
-
+    //KEYCARD
     public static ItemStack keycard(Component name, String rgb, boolean showInTooltip) {
         ItemStack stack = new ItemStack(ModItems.KEYCARD.get());
 
@@ -658,10 +619,7 @@ public class SecureLibUtils {
         return stack;
     }
 
-    /*
-    TRICARD
-     */
-
+    //TRICARD
     public static ItemStack tricard(Component name, String rgb, boolean showInTooltip) {
         ItemStack stack = new ItemStack(ModItems.TRICARD.get());
 
@@ -692,20 +650,17 @@ public class SecureLibUtils {
         return stack;
     }
 
-    /*
-    OTHER
-     */
-
+    //OTHER
     public static boolean isSkeleton(ItemStack stack) {
         return stack.is(ModTags.Items.SKELETON_KEYCARDS);
     }
 
     public static boolean isTriData(BlockEntity blockEntity) {
         if (hasNoData(blockEntity)) return false;
-        if (blockEntity instanceof CardReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractCardReaderBlockEntity be) {
             return be.getClearance() == 0;
         }
-        if (blockEntity instanceof KeypadReaderBlockEntity be) {
+        if (blockEntity instanceof AbstractKeypadReaderBlockEntity be) {
             return be.getClearance() == 0;
         }
 

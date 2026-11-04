@@ -9,31 +9,35 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
+import net.rubii.securelib.api.block.entity.AbstractKeypadReaderBlockEntity;
 import net.rubii.securelib.screen.ModMenuTypes;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class KeypadReaderMenu extends AbstractContainerMenu {
 
-    public final KeypadReaderBlockEntity blockEntity;
+    public final AbstractKeypadReaderBlockEntity blockEntity;
     private final Level level;
 
     public KeypadReaderMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
-        this(id, inventory, inventory.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(id, inventory, Objects.requireNonNull(inventory.player.level().getBlockEntity(extraData.readBlockPos())));
     }
 
     public KeypadReaderMenu(int id, Inventory inv, BlockEntity entity) {
         super(ModMenuTypes.KEYPAD_READER_MENU.get(), id);
-        this.blockEntity = ((KeypadReaderBlockEntity)entity);
+        this.blockEntity = ((AbstractKeypadReaderBlockEntity)entity);
         this.level = entity.getLevel();
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int i) {
+    @NotNull
+    public ItemStack quickMoveStack(@NotNull Player player, int i) {
         return new ItemStack(Items.AIR);
     }
 
     @Override
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, level.getBlockState(blockEntity.getBlockPos()).getBlock());
     }
 }

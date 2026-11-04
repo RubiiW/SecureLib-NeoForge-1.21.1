@@ -8,8 +8,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.rubii.securelib.components.ModDataComponents;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EditorItem extends Item {
     public EditorItem(Properties properties) {
@@ -17,7 +19,7 @@ public class EditorItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> components, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag flag) {
         if (Screen.hasShiftDown()) {
             if (stack.get(DataComponents.DYED_COLOR) == null && stack.get(ModDataComponents.FREQUENCY) == null && stack.get(ModDataComponents.CLEARANCE) == null){
                 components.add(Component.translatable("tooltip.securelib.data_receiver.no_data").withStyle(ChatFormatting.GRAY));
@@ -25,14 +27,14 @@ public class EditorItem extends Item {
             }
 
             if (stack.get(ModDataComponents.CLEARANCE) != null){
-                String clearance = " " + stack.get(ModDataComponents.CLEARANCE).toString();
+                String clearance = " " + Objects.requireNonNull(stack.get(ModDataComponents.CLEARANCE));
                 String translated = Component.translatable("tooltip.securelib.data_receiver.clearance").getString();
                 Component component = Component.literal(translated + clearance).withStyle(ChatFormatting.GRAY);
 
                 components.add(component);
             }
             if (stack.get(ModDataComponents.FREQUENCY) != null){
-                String frequency = " " + stack.get(ModDataComponents.FREQUENCY).toString();
+                String frequency = " " + Objects.requireNonNull(stack.get(ModDataComponents.FREQUENCY));
                 String translated = Component.translatable("tooltip.securelib.data_receiver.frequency").getString();
                 Component component = Component.literal(translated + frequency).withStyle(ChatFormatting.GRAY);
 

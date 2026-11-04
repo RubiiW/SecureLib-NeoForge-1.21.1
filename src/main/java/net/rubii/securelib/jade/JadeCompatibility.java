@@ -1,10 +1,9 @@
 package net.rubii.securelib.jade;
 
-import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.block.custom.CardReaderBlock;
-import net.rubii.securelib.block.custom.KeypadReaderBlock;
-import net.rubii.securelib.block.entity.CardReaderBlockEntity;
-import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
+import net.rubii.securelib.api.block.AbstractCardReaderBlock;
+import net.rubii.securelib.api.block.AbstractKeypadReaderBlock;
+import net.rubii.securelib.api.block.entity.AbstractCardReaderBlockEntity;
+import net.rubii.securelib.api.block.entity.AbstractKeypadReaderBlockEntity;
 import net.rubii.securelib.jade.component_providers.CardReadersProvider;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
@@ -16,13 +15,13 @@ public class JadeCompatibility implements IWailaPlugin {
 
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerBlockDataProvider(CardReadersProvider.INSTANCE, CardReaderBlockEntity.class);
-        registration.registerBlockDataProvider(CardReadersProvider.INSTANCE, KeypadReaderBlockEntity.class);
+        registration.registerBlockDataProvider(CardReadersProvider.INSTANCE, AbstractCardReaderBlockEntity.class);
+        registration.registerBlockDataProvider(CardReadersProvider.INSTANCE, AbstractKeypadReaderBlockEntity.class);
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerBlockComponent(CardReadersProvider.INSTANCE, CardReaderBlock.class);
-        registration.registerBlockComponent(CardReadersProvider.INSTANCE, KeypadReaderBlock.class);
+        registration.registerBlockComponent(CardReadersProvider.INSTANCE, AbstractCardReaderBlock.class);
+        registration.registerBlockComponent(CardReadersProvider.INSTANCE, AbstractKeypadReaderBlock.class);
     }
 }

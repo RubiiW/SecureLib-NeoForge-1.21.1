@@ -5,10 +5,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.rubii.securelib.SecureLib;
-import net.rubii.securelib.block.custom.CardReaderBlock;
-import net.rubii.securelib.block.custom.KeypadReaderBlock;
-import net.rubii.securelib.block.entity.CardReaderBlockEntity;
-import net.rubii.securelib.block.entity.KeypadReaderBlockEntity;
+import net.rubii.securelib.api.block.AbstractCardReaderBlock;
+import net.rubii.securelib.api.block.AbstractKeypadReaderBlock;
+import net.rubii.securelib.api.block.entity.AbstractCardReaderBlockEntity;
+import net.rubii.securelib.api.block.entity.AbstractKeypadReaderBlockEntity;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
 
@@ -53,13 +53,13 @@ public enum CardReadersProvider implements IBlockComponentProvider, IServerDataP
 
     @Override
     public void appendServerData(CompoundTag data, BlockAccessor accessor) {
-        if (accessor.getBlock() instanceof CardReaderBlock block) {
+        if (accessor.getBlock() instanceof AbstractCardReaderBlock block) {
             data.putBoolean("Informative", block.informative);
-        } else if (accessor.getBlock() instanceof KeypadReaderBlock block) {
+        } else if (accessor.getBlock() instanceof AbstractKeypadReaderBlock block) {
             data.putBoolean("Informative", block.informative);
         }
 
-        if (accessor.getBlockEntity() instanceof CardReaderBlockEntity be) {
+        if (accessor.getBlockEntity() instanceof AbstractCardReaderBlockEntity be) {
             if (be.getClearance() != 0){
                 data.putInt("Clearance", be.getClearance());
             }
@@ -75,7 +75,7 @@ public enum CardReadersProvider implements IBlockComponentProvider, IServerDataP
             if (be.getFrequency() != 0){
                 data.putInt("Frequency", be.getFrequency());
             }
-        } else  if (accessor.getBlockEntity() instanceof KeypadReaderBlockEntity be) {
+        } else  if (accessor.getBlockEntity() instanceof AbstractKeypadReaderBlockEntity be) {
             if (be.getClearance() != 0){
                 data.putInt("Clearance", be.getClearance());
             }

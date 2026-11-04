@@ -197,12 +197,12 @@ public class KeypadScreen extends AbstractContainerScreen<KeypadMenu> {
             minecraft.getConnection().send(
                     new KeypadPayloadCode(menu.blockEntity.getBlockPos(), input)
             );
-            player.displayClientMessage(Component.translatable("block.securelib.keypad.code_set"), true);
-            input = "";
+        } else {
+            minecraft.getConnection().send(
+                    new KeypadPayloadInput(menu.blockEntity.getBlockPos(), input)
+            );
         }
-        minecraft.getConnection().send(
-                new KeypadPayloadInput(menu.blockEntity.getBlockPos(), input, player.getStringUUID())
-        );
+        input = "";
         player.closeContainer();
     }
 

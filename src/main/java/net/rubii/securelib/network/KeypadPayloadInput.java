@@ -8,7 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.rubii.securelib.SecureLib;
 
-public record KeypadPayloadInput(BlockPos blockPos, String input, String uuid) implements CustomPacketPayload {
+public record KeypadPayloadInput(BlockPos blockPos, String input) implements CustomPacketPayload {
 
     public static final Type<KeypadPayloadInput> TYPE =
             new Type<>(ResourceLocation.fromNamespaceAndPath(SecureLib.MODID, "set_keypad_input"));
@@ -17,7 +17,6 @@ public record KeypadPayloadInput(BlockPos blockPos, String input, String uuid) i
             StreamCodec.composite(
                     BlockPos.STREAM_CODEC, KeypadPayloadInput::blockPos,
                     ByteBufCodecs.STRING_UTF8, KeypadPayloadInput::input,
-                    ByteBufCodecs.STRING_UTF8, KeypadPayloadInput::uuid,
                     KeypadPayloadInput::new
             );
 

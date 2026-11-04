@@ -8,15 +8,14 @@
   "block.securelib.keypad_reader.code_set": "This Keypad Reader's code has been configured",
   "block.securelib.keypad_reader.destroy_requirement": "The Keypad Reader needs to be configured in order to be removed",
   "block.securelib.keypad_reader.destroy_process": "Crouch-Left click and enter the code to remove",
-  "block.securelib.keypad_reader.missing_data": "Use a Reader Editor to configure this block",
+  "block.securelib.keypad_reader.missing_data": "Use a §4Reader Editor§r to configure this block",
   "block.securelib.keypad_reader.already_configured": "This Keypad Reader is already configured",
 
   "block.securelib.card_reader": "Card Reader",
-  "block.securelib.card_reader.already_configured": "This Reader is already configured",
-  "block.securelib.card_reader.missing_data": "Use a Reader Editor to configure this block",
-  "block.securelib.card_reader.need_keycard": "Use a Keycard to operate this block",
-  "block.securelib.card_reader.removal": "Left Click this block to remove it",
-  "block.securelib.card_reader.destroy_process": "Left Click with a configured Reader Editor to remove",
+  "block.securelib.card_reader.already_configured": "This Reader is already configured, Left Click it to remove it",
+  "block.securelib.card_reader.missing_data": "Use a §4Reader Editor§r to configure this block",
+  "block.securelib.card_reader.need_keycard": "Use a §4Keycard§r to operate this block",
+  "block.securelib.card_reader.destroy_process": "Left Click with a configured §4Reader Editor§r to remove",
   "block.securelib.card_reader.destroy_requirement": "The Reader needs to be configured in order to be removed",
 
   "block.securelib.card_printer": "Card Printer",
@@ -50,7 +49,7 @@
 
   "item.securelib.trireader_editor": "Tri-Reader Editor",
   "item.securelib.reader_editor": "Reader Editor",
-  "item.securelib.reader_editor.missing_data": "You need to configure your Editor in a Card Writer first",
+  "item.securelib.reader_editor.missing_data": "You need to configure your §4Editor§r in a §4Card Writer§r first",
 
   "item.securelib.data_reciever.mismatch_frequency": "Frequency does not match",
   "item.securelib.data_reciever.mismatch_frequency_informative": "The required frequency is ",
@@ -64,9 +63,9 @@
   "tooltip.securelib.data_receiver.color": "Color:",
   "tooltip.securelib.data_receiver.frequency": "Frequency:",
   "tooltip.securelib.data_receiver.no_data": "No data yet",
-  "tooltip.securelib.data_receiver.edit_double": "Use a Card Printer & Writer to edit",
-  "tooltip.securelib.data_receiver.edit_color": "Use a Card Printer to edit",
-  "tooltip.securelib.data_receiver.edit_data": "Use a Card Writer to edit",
+  "tooltip.securelib.data_receiver.edit_double": "Use a §4Card Printer§r & §4Card Writer§r to edit",
+  "tooltip.securelib.data_receiver.edit_color": "Use a §4Card Printer§r to edit",
+  "tooltip.securelib.data_receiver.edit_data": "Use a §4Card Writer§r to edit",
 
   "tooltip.securelib.tridata_receiver": "Tri-Data Receiver: Press [SHIFT] for more info",
   "tooltip.securelib.tridata_receiver.clearances": "Clearances:",
