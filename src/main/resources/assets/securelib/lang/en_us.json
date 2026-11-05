@@ -2,14 +2,14 @@
   "block.securelib.keypad": "Keypad",
   "block.securelib.keypad.code_set": "This Keypad has been configured",
   "block.securelib.keypad.destroy_requirement": "The Keypad needs to be configured in order to be removed",
-  "block.securelib.keypad.destroy_process": "Crouch-Left click and enter the code to remove",
+  "block.securelib.keypad.destroy_process": "Crouch & Left click and enter the code to remove",
 
   "block.securelib.keypad_reader": "Keypad Reader",
   "block.securelib.keypad_reader.code_set": "This Keypad Reader's code has been configured",
   "block.securelib.keypad_reader.destroy_requirement": "The Keypad Reader needs to be configured in order to be removed",
   "block.securelib.keypad_reader.destroy_process": "Crouch-Left click and enter the code to remove",
   "block.securelib.keypad_reader.missing_data": "Use a §4Reader Editor§r to configure this block",
-  "block.securelib.keypad_reader.already_configured": "This Keypad Reader is already configured",
+  "block.securelib.keypad_reader.already_configured": "This Keypad Reader is already configured, Left Click it to remove it",
 
   "block.securelib.card_reader": "Card Reader",
   "block.securelib.card_reader.already_configured": "This Reader is already configured, Left Click it to remove it",
@@ -29,8 +29,8 @@
   "block.securelib.card_writer.frequency": "Frequency",
   "block.securelib.card_writer.clearance": "Clearance",
   "block.securelib.card_writer.clearances": "Clearances",
-  "block.securelib.card_writer.input_slot_limitation": "May only take Data Receivers (#data_receivers)",
-  "block.securelib.card_writer.input_slot_limitation_alt": "May only take Tri-Data Receivers (#tridata_receivers)",
+  "block.securelib.card_writer.input_slot_limitation": "May only take §4Data Receivers§r (#data_receivers)",
+  "block.securelib.card_writer.input_slot_limitation_alt": "May only take §4Tri-Data Receivers§r (#tridata_receivers)",
 
   "gui.securelib.card_printer.card_name": "Name",
   "gui.securelib.card_printer.card_color": "Color",
@@ -44,8 +44,8 @@
   "item.securelib.tricard": "Tricard",
 
   "item.securelib.card": "Access Card",
-  "item.securelib.card.missing_data": "This card has no data yet",
-  "item.securelib.card.type_mismatch": "This card is not compatible",
+  "item.securelib.card.missing_data": "This §4Card§r has no data yet",
+  "item.securelib.card.type_mismatch": "This §4Card§r is not compatible",
 
   "item.securelib.trireader_editor": "Tri-Reader Editor",
   "item.securelib.reader_editor": "Reader Editor",
@@ -73,12 +73,12 @@
   "tooltip.securelib.tridata_receiver.clearances.m": " □: ",
   "tooltip.securelib.tridata_receiver.clearances.l": " ←: ",
 
-  "tooltip.securelib.keypads": "Place it and right click to configure",
+  "tooltip.securelib.keypads": "Place and right click to configure this block",
 
-  "tooltip.securelib.keypad_readers.1": "Place it and right click to configure the Keypad",
+  "tooltip.securelib.keypad_readers.1": "Place and right click to configure the Keypad",
   "tooltip.securelib.keypad_readers.2": "Use a Reader Editor to configure the Reader",
 
-  "tooltip.securelib.card_readers": "Use a Reader Editor to configure",
+  "tooltip.securelib.card_readers": "Use a §4(Tri-)Reader Editor§r to configure",
 
   "config.jade.plugin_securelib.card_readers" : "Card Readers"
 }
